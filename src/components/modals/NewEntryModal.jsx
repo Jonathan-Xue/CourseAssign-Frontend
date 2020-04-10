@@ -7,6 +7,7 @@ const initialState = {
 
     form: {
         courseNo: null,
+        courseName: null,
         year: null,
         term: null,
         primaryInstructor: null,
@@ -77,9 +78,15 @@ class NewEntryModal extends React.Component {
 
                 <Modal.Body>
                     <Form>
-                        <Form.Group controlId="courseNo">
-                            <Form.Control required name="courseNo" onChange={this.textInput} placeholder="Course Number"/>
-                        </Form.Group>
+                        <Form.Row>
+                            <Form.Group as={Col} controlId="courseNo">
+                                <Form.Control required name="courseNo" onChange={this.textInput} placeholder="Course Number"/>
+                            </Form.Group>
+
+                            <Form.Group as={Col} controlId="courseName">
+                                <Form.Control required name="courseName" onChange={this.textInput} placeholder="Course Name"/>
+                            </Form.Group>
+                        </Form.Row>
 
                         <Form.Row>
                             <Form.Group as={Col} controlId="year">
