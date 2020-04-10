@@ -64,10 +64,9 @@ export const updateCourse = async(
 }
 
 // DELETE: '/courses/:courseNo/:courseName'
-export const updateCourse = async(
+export const deleteCourse = async(
 	courseNo,
-	courseName,
-	courseDesc
+	courseName
 ) => {
 	try {
 		let body = {
