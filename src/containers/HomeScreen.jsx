@@ -6,6 +6,9 @@ import NewCourseModal from '../components/modals/NewCourseModal.jsx';
 import DeleteCourseModal from '../components/modals/DeleteCourseModal.jsx'
 import './HomeScreen.scss';
 
+import { getEntries } from '../requests/entries.js'
+import { getCourses } from '../requests/courses.js'
+
 import { connect } from 'react-redux';
 import { sampleAction } from '../actions/fooActions';
 
@@ -40,6 +43,24 @@ class HomeScreen extends React.Component {
     openDeleteCourseModal = () => { this.setState({ showDeleteCourseModal: true }); };
     closeDeleteCourseModal = () => { this.setState({ showDeleteCourseModal: false }); };
 
+    // Find Entries
+    findEntries = () => {
+        getEntries().then(res => {
+            this.setState({
+                data: JSON.stringify(res.data.data, null, '\t')
+            });
+        });
+    }
+
+    // Find Courses
+    findCourses = () => {
+        getCourses().then(res => {
+            this.setState({
+                data: JSON.stringify(res.data.data, null, '\t')
+            });
+        });
+    }
+
     // Render
     render() {
         return (
@@ -67,8 +88,8 @@ class HomeScreen extends React.Component {
                 <br/>
 
                 <ButtonGroup>
-                    <Button variant="secondary">Find Grades</Button>
-                    <Button variant="secondary">Find Courses</Button>
+                    <Button variant="secondary" onClick={this.findEntries}>Find Grades</Button>
+                    <Button variant="secondary" onClick={this.findCourses}>Find Courses</Button>
                 </ButtonGroup>
 
                 <br/>

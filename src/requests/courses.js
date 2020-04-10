@@ -1,4 +1,7 @@
-const BASE_URL = 'http://127.0.0.1:5000/'
+import axios from 'axios';
+
+// BASE URL
+const BASE_URL = 'http://127.0.0.1:5000/';
 
 // GET: '/courses'
 export const getCourses = async() => {
@@ -7,7 +10,7 @@ export const getCourses = async() => {
 			crossDomain: true
 		};
 
-		const response = await.get(
+		const response = await axios.get(
 			BASE_URL + '/courses', 
 			body
 		);

@@ -2,13 +2,15 @@ import React from 'react';
 import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
+import { getCourses, createCourse, updateCourse } from '../../requests/courses.js'
+
 const initialState = {
     error: false,
 
     form: {
         courseNo: null,
         courseName: null,
-        courseDescription: null,
+        courseDesc: null,
     }   
 }
 
@@ -32,7 +34,7 @@ class NewCourseModal extends React.Component {
     // Save Changes To Database
     submit = (e) => {
         // Check All Fields Valid
-        for(const entry in this.state.form) {
+        for (const entry in this.state.form) {
             if (!this.state.form[entry]) {
                 this.setState({ error: true });
                 return;
@@ -40,11 +42,42 @@ class NewCourseModal extends React.Component {
         }
         this.setState({ error: false });
 
-        // TODO: Link To Backend Server
-        console.log(this.state);
+        // Axios Request
+        getCourses().then(res => {
+            // Iterate Over Response
+            let flag = false;
+            for (const entry of res.data.data) {
+                if (entry['courseNo'].toString() === this.state.form.courseNo && entry['courseName'].toString() === this.state.form.courseName) {
+                    flag = true;
+                    break;
+                }
+            }
 
-        // Close Form
-        this.props.close();
+            // Create New Record || Update Existing Record
+            if (flag) {
+                updateCourse(
+                    this.state.form.courseNo,
+                    this.state.form.courseName,
+                    this.state.form.courseDesc
+                ).then(res => {
+                    // Close Form
+                    this.props.close();
+                }).catch(err => {
+                    console.log(err);
+                });
+            } else {
+                createCourse(
+                    this.state.form.courseNo,
+                    this.state.form.courseName,
+                    this.state.form.courseDesc
+                ).then(res => {
+                    // Close Form
+                    this.props.close();
+                }).catch(err => {
+                    console.log(err);
+                });
+            }
+        });
     }
 
     // Close Modal
