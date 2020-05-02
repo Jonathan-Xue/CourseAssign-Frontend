@@ -26,7 +26,7 @@ const initialState = {
         d: null,
         dMinus: null,
         f: null,
-    }   
+    },
 }
 
 class NewEntryModal extends React.Component {

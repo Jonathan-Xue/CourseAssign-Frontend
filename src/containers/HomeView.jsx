@@ -4,7 +4,7 @@ import NewEntryModal from '../components/modals/NewEntryModal.jsx';
 import DeleteEntryModal from '../components/modals/DeleteEntryModal.jsx';
 import NewCourseModal from '../components/modals/NewCourseModal.jsx';
 import DeleteCourseModal from '../components/modals/DeleteCourseModal.jsx'
-import './HomeScreen.scss';
+import './HomeView.scss';
 
 import { getEntries } from '../requests/entries.js'
 import { getCourses } from '../requests/courses.js'
@@ -12,7 +12,7 @@ import { getCourses } from '../requests/courses.js'
 import { connect } from 'react-redux';
 import { sampleAction } from '../actions/fooActions';
 
-class HomeScreen extends React.Component {
+class HomeView extends React.Component {
     constructor() {
         super();
 
@@ -107,4 +107,4 @@ const mapStateToProps = store => {
     }
 }
 
-export default connect(mapStateToProps, undefined)(HomeScreen);
+export default connect(mapStateToProps, undefined)(HomeView);

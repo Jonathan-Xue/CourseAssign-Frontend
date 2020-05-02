@@ -5,7 +5,8 @@ import { ConnectedRouter } from 'connected-react-router'
 import configureStore, { history } from './store'
 import './App.scss';
 
-import HomeScreen from './containers/HomeScreen';
+import HomeView from './containers/HomeView';
+import LoginView from './containers/LoginView'
 
 const store = configureStore()
 export default function App() {
@@ -14,7 +15,8 @@ export default function App() {
             <ConnectedRouter history={history}> { /* place ConnectedRouter under Provider */ }
                 <>
                     <Switch>
-                        <Route exact path="/" component={HomeScreen} />
+                        <Route exact path="/" component={LoginView} />
+                        <Route exact path="/home" component={HomeView} />
                     </Switch>
                 </>
             </ConnectedRouter>

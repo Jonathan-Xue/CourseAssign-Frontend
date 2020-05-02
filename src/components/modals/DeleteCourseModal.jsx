@@ -10,7 +10,7 @@ const initialState = {
     form: {
         courseNo: null,
         courseName: null,
-    }   
+    },
 }
 
 class DeleteCourseModal extends React.Component {

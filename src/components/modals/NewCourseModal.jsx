@@ -11,7 +11,7 @@ const initialState = {
         courseNo: null,
         courseName: null,
         courseDesc: null,
-    }   
+    },
 }
 
 class NewCourseModal extends React.Component {

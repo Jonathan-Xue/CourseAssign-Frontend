@@ -13,7 +13,7 @@ const initialState = {
         year: null,
         term: null,
         primaryInstructor: null,
-    }   
+    },
 }
 
 class DeleteEntryModal extends React.Component {
