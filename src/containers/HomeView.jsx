@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import NavBar from './NavBar';
-import NewEntryModal from '../components/modals/NewEntryModal.jsx';
-import DeleteEntryModal from '../components/modals/DeleteEntryModal.jsx';
-import NewCourseModal from '../components/modals/NewCourseModal.jsx';
-import DeleteCourseModal from '../components/modals/DeleteCourseModal.jsx';
+import NewEntryModal from '../components/modals/NewEntryModal';
+import DeleteEntryModal from '../components/modals/DeleteEntryModal';
+import NewCourseModal from '../components/modals/NewCourseModal';
+import DeleteCourseModal from '../components/modals/DeleteCourseModal';
 import './HomeView.scss';
 
 import { getEntries } from '../requests/entries.js'
