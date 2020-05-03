@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Button, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { auth } from "../firebase";
 import logo from '../assets/logo.svg';
 import './NavBar.scss';
 
 import { connect } from 'react-redux';
-import { logout } from '../actions/userActions.js';
+import { login, logout } from '../actions/userActions.js';
 
 class NavBar extends Component {
     constructor() {
@@ -19,13 +20,30 @@ class NavBar extends Component {
         };
     }
 
-    // Button Handlers
-    signoutButtonClickHandler= (event) => {
-        this.props.dispatch(logout());
+    // componentDidMount
+    componentDidMount() {
+        // Firebase Auth
+        auth.onAuthStateChanged(res => {
+            if (res) {
+                // Update Store
+                if (!this.props.user.status) {
+                    this.props.dispatch(login(res));
+                }
+            } else {
+                this.props.history.push({
+                    pathname: "/login",
+                    state: {}
+                });
+            }
+        });
+    }
 
-        this.props.history.push({
-            pathname: '/login',
-            state: {}
+    // Button Handlers
+    signoutButtonClickHandler = (event) => {
+        auth.signOut().then(() => {
+            this.props.dispatch(logout());
+        }).catch(err => {
+            console.log(err);
         });
     }
 
@@ -45,7 +63,7 @@ class NavBar extends Component {
                     </Nav>
 
                     <Navbar.Text>
-                        Signed In As: <Link to="/profile">{this.props.user.status && this.props.user.profile.user.email.substring(0, this.props.user.profile.user.email.lastIndexOf("@"))}</Link>
+                        Signed In As: <Link to="/profile">{this.props.user.status && this.props.user.profile.email.substring(0, this.props.user.profile.email.lastIndexOf("@"))}</Link>
                     </Navbar.Text>
                     <Nav.Item>
                         <Button className="logout-btn" variant="danger" onClick={this.signoutButtonClickHandler}>Logout</Button>

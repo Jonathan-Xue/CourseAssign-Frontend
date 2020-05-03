@@ -21,13 +21,17 @@ class LoginView extends Component {
 
     // componentDidMount
     componentDidMount() {
-        // Check Login
-        if (this.props.user.status) {
-            this.props.history.push({
-                pathname: '/',
-                state: {}
-            });
-        }
+        // Firebase Auth
+        auth.onAuthStateChanged(res => {
+            if (res) {
+                this.props.dispatch(login(res));
+
+                this.props.history.push({
+                    pathname: "/",
+                    state: {}
+                });
+            }
+        });
     }
 
     // Form Input
@@ -40,38 +44,19 @@ class LoginView extends Component {
 
     // Button Handlers
     signInButtonClickHandler = (e) => {
-        auth.signInWithEmailAndPassword(this.state.username, this.state.password).then(user => {
-            this.props.dispatch(login(user));
-
-            this.props.history.push({
-                pathname: "/",
-                state: {}
-            });
-        }).catch(err => {
+        auth.signInWithEmailAndPassword(this.state.username, this.state.password).then().catch(err => {
             this.setState({ loginError: err });
         });
     }
 
     googleSignInButtonClickHandler = (e) => {
-        auth.signInWithPopup(provider).then(user => {
-            this.props.dispatch(login(user));
-
-            this.props.history.push({
-                pathname: "/",
-                state: {}
-            });
-        }).catch(err => {
+        auth.signInWithPopup(provider).then().catch(err => {
             this.setState({ loginError: err });
         });
     }
 
     registerButtonClickHandler = (e) => {
-        this.props.dispatch(login({ user: { email: "guest@gmail.com" } }));
-
-        this.props.history.push({
-            pathname: '/',
-            state: {}
-        });
+        // TODO:
     }
 
     // Render

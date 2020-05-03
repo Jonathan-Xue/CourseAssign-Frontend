@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import NavBar from './NavBar';
 import NewEntryModal from '../components/modals/NewEntryModal';
 import DeleteEntryModal from '../components/modals/DeleteEntryModal';
@@ -26,17 +26,7 @@ class HomeView extends React.Component {
             data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet nunc vitae nisl ullamcorper volutpat. Aliquam in augue vitae felis pretium ornare quis non velit. Morbi aliquet ipsum convallis faucibus luctus. In scelerisque risus non enim consectetur, vel tincidunt eros tempor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque elementum lobortis rhoncus. Nullam sagittis pretium volutpat. Cras id tristique lacus. Cras arcu nisi, scelerisque commodo cursus sed, faucibus a ligula. Morbi iaculis nulla id fringilla laoreet. Praesent ornare tortor quis risus ullamcorper luctus. Proin viverra pulvinar tempor. Morbi at iaculis mi.",
         };
     }
-
-    // componentDidMount
-    componentDidMount() {
-        if (!this.props.user.status) {
-            this.props.history.push({
-                pathname: '/login',
-                state: {}
-            });
-        }
-    }
-
+    
     // New Entry Modal
     openNewEntryModal = () => { this.setState({ showNewEntryModal: true }); };
     closeNewEntryModal = () => { this.setState({ showNewEntryModal: false }); };
@@ -74,40 +64,32 @@ class HomeView extends React.Component {
     // Render
     render() {
         return (
+            <React.Fragment>
+
+            <NavBar history={this.props.history}/>
             <div className="home-screen">
-                <NavBar history={this.props.history}/>
-                <NewEntryModal visibility={this.state.showNewEntryModal} close={this.closeNewEntryModal}/>
-                <DeleteEntryModal visibility={this.state.showDeleteEntryModal} close={this.closeDeleteEntryModal}/>
+                <div className="left">
+                    <NewEntryModal visibility={this.state.showNewEntryModal} close={this.closeNewEntryModal}/>
+                    <DeleteEntryModal visibility={this.state.showDeleteEntryModal} close={this.closeDeleteEntryModal}/>
 
-                <NewCourseModal visibility={this.state.showNewCourseModal} close={this.closeNewCourseModal}/>
-                <DeleteCourseModal visibility={this.state.showDeleteCourseModal} close={this.closeDeleteCourseModal}/>
+                    <NewCourseModal visibility={this.state.showNewCourseModal} close={this.closeNewCourseModal}/>
+                    <DeleteCourseModal visibility={this.state.showDeleteCourseModal} close={this.closeDeleteCourseModal}/>
 
-                <ButtonGroup>
-                    <Button variant="primary" onClick={this.openNewEntryModal}>Insert Entry</Button>
-                    <Button variant="primary" onClick={this.openDeleteEntryModal}>Delete Entry</Button>
-                </ButtonGroup>
+                    <ListGroup className="list" variant="flush">
+                        <ListGroup.Item action className="list-item" onClick={this.openNewEntryModal}>Insert Entry</ListGroup.Item>
+                        <ListGroup.Item action className="list-item" onClick={this.openDeleteEntryModal}>Delete Entry</ListGroup.Item>
+                        <ListGroup.Item action className="list-item" onClick={this.openNewCourseModal}>Insert/Modify Course</ListGroup.Item>
+                        <ListGroup.Item action className="list-item" onClick={this.openDeleteCourseModal}>Delete Course</ListGroup.Item>
+                        <ListGroup.Item action className="list-item" onClick={this.findEntries}>Find Grades</ListGroup.Item>
+                        <ListGroup.Item action className="list-item" onClick={this.findCourses}>Find Courses</ListGroup.Item>
+                    </ListGroup>
+                </div>
 
-                <br/>
-                <br/>
-
-                <ButtonGroup>
-                    <Button variant="primary" onClick={this.openNewCourseModal}>Insert/Modify Course</Button>
-                    <Button variant="primary" onClick={this.openDeleteCourseModal}>Delete Course</Button>
-                </ButtonGroup>
-
-                <br/>
-                <br/>
-
-                <ButtonGroup>
-                    <Button variant="secondary" onClick={this.findEntries}>Find Grades</Button>
-                    <Button variant="secondary" onClick={this.findCourses}>Find Courses</Button>
-                </ButtonGroup>
-
-                <br/>
-                <br/>
-
-                <p>{this.state.data}</p>
+                <div className="right">
+                    <p>{this.state.data}</p>
+                </div>
             </div>
+            </React.Fragment>
         );
     };
 };
