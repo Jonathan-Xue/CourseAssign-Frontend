@@ -1,16 +1,16 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
+import NavBar from './NavBar';
 import NewEntryModal from '../components/modals/NewEntryModal.jsx';
 import DeleteEntryModal from '../components/modals/DeleteEntryModal.jsx';
 import NewCourseModal from '../components/modals/NewCourseModal.jsx';
-import DeleteCourseModal from '../components/modals/DeleteCourseModal.jsx'
+import DeleteCourseModal from '../components/modals/DeleteCourseModal.jsx';
 import './HomeView.scss';
 
 import { getEntries } from '../requests/entries.js'
 import { getCourses } from '../requests/courses.js'
 
 import { connect } from 'react-redux';
-import { sampleAction } from '../actions/fooActions';
 
 class HomeView extends React.Component {
     constructor() {
@@ -25,6 +25,16 @@ class HomeView extends React.Component {
 
             data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet nunc vitae nisl ullamcorper volutpat. Aliquam in augue vitae felis pretium ornare quis non velit. Morbi aliquet ipsum convallis faucibus luctus. In scelerisque risus non enim consectetur, vel tincidunt eros tempor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque elementum lobortis rhoncus. Nullam sagittis pretium volutpat. Cras id tristique lacus. Cras arcu nisi, scelerisque commodo cursus sed, faucibus a ligula. Morbi iaculis nulla id fringilla laoreet. Praesent ornare tortor quis risus ullamcorper luctus. Proin viverra pulvinar tempor. Morbi at iaculis mi.",
         };
+    }
+
+    // componentDidMount
+    componentDidMount() {
+        if (!this.props.user.status) {
+            this.props.history.push({
+                pathname: '/login',
+                state: {}
+            });
+        }
     }
 
     // New Entry Modal
@@ -65,6 +75,7 @@ class HomeView extends React.Component {
     render() {
         return (
             <div className="home-screen">
+                <NavBar history={this.props.history}/>
                 <NewEntryModal visibility={this.state.showNewEntryModal} close={this.closeNewEntryModal}/>
                 <DeleteEntryModal visibility={this.state.showDeleteEntryModal} close={this.closeDeleteEntryModal}/>
 
@@ -103,7 +114,7 @@ class HomeView extends React.Component {
 
 const mapStateToProps = store => {
     return {
-      sample: store.sample,
+        user: store.user
     }
 }
 

@@ -12,13 +12,11 @@ const store = configureStore()
 export default function App() {
     return (
         <Provider store={store}>
-            <ConnectedRouter history={history}> { /* place ConnectedRouter under Provider */ }
-                <>
-                    <Switch>
-                        <Route exact path="/" component={LoginView} />
-                        <Route exact path="/home" component={HomeView} />
-                    </Switch>
-                </>
+            <ConnectedRouter history={history}>
+                <Switch>
+                    <Route exact path="/" component={HomeView} />
+                    <Route exact path="/login" component={LoginView} />
+                </Switch>
             </ConnectedRouter>
         </Provider>
     );

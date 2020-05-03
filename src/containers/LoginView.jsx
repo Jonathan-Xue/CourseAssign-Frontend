@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
+import { auth, provider } from "../firebase";
+import background from '../assets/background.jpg';
 import './LoginView.scss';
 
-import background from '../assets/background.jpg';
+import { connect } from 'react-redux';
+import { login } from '../actions/userActions.js';
 
 class LoginView extends Component {
     constructor() {
@@ -12,13 +15,19 @@ class LoginView extends Component {
             username: '',
             password: '',
 
-            loginError: false,
+            loginError: null,
         };
     }
 
     // componentDidMount
     componentDidMount() {
-
+        // Check Login
+        if (this.props.user.status) {
+            this.props.history.push({
+                pathname: '/',
+                state: {}
+            });
+        }
     }
 
     // Form Input
@@ -30,23 +39,37 @@ class LoginView extends Component {
     }
 
     // Button Handlers
-    signInButtonClickHandler = (event) => {
-        if (this.state.username && this.state.password) {
+    signInButtonClickHandler = (e) => {
+        auth.signInWithEmailAndPassword(this.state.username, this.state.password).then(user => {
+            this.props.dispatch(login(user));
+
             this.props.history.push({
-                pathname: '/home',
+                pathname: "/",
                 state: {}
             });
-        } else {
-            this.setState({
-                ...this.state,
-                loginError: true,
-            })
-        }
+        }).catch(err => {
+            this.setState({ loginError: err });
+        });
     }
 
-    registerButtonClickHandler= (event) => {
+    googleSignInButtonClickHandler = (e) => {
+        auth.signInWithPopup(provider).then(user => {
+            this.props.dispatch(login(user));
+
+            this.props.history.push({
+                pathname: "/",
+                state: {}
+            });
+        }).catch(err => {
+            this.setState({ loginError: err });
+        });
+    }
+
+    registerButtonClickHandler = (e) => {
+        this.props.dispatch(login({ user: { email: "guest@gmail.com" } }));
+
         this.props.history.push({
-            pathname: '/home',
+            pathname: '/',
             state: {}
         });
     }
@@ -77,6 +100,8 @@ class LoginView extends Component {
 
                         <Button block className="signin-button" onClick={this.signInButtonClickHandler}>Sign In</Button>
 
+                        <Button block className="signin-button" onClick={this.googleSignInButtonClickHandler}>Sign In With Google</Button>
+
                         <Button block className="register-button" onClick={this.registerButtonClickHandler}>Register</Button>
                     </Form>
                 </div>
@@ -85,4 +110,10 @@ class LoginView extends Component {
     }
 }
 
-export default LoginView;
+const mapStateToProps = store => {
+    return {
+        user: store.user,
+    }
+}
+
+export default connect(mapStateToProps, undefined)(LoginView);
