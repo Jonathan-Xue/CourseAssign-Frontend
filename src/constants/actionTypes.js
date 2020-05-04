@@ -1,5 +1,13 @@
 export const SAMPLE_ACTION_TYPE = "SAMPLE_ACTION_TYPE";
 
-// User Actions
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
+// Auth Actions
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILED = "LOGIN_FAILED";
+
+export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILED = "LOGOUT_FAILED";
+
+export const VERIFY_REQUEST = "VERIFY_REQUEST";
+export const VERIFY_SUCCESS = "VERIFY_SUCCESS";

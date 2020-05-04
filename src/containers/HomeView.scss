@@ -35,6 +35,11 @@
         justify-content: center;
         overflow: auto;
         padding: 1rem 1rem;
-        text-align: center;
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
     }
 }

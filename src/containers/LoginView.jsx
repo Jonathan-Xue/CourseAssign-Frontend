@@ -1,37 +1,20 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router";
 import { Alert, Button, Form } from 'react-bootstrap';
-import { auth, provider } from "../firebase";
 import background from '../assets/background.jpg';
 import './LoginView.scss';
 
 import { connect } from 'react-redux';
-import { login } from '../actions/userActions.js';
+import { login, loginWithGoogle } from '../actions/authActions';
 
 class LoginView extends Component {
     constructor() {
         super();
 
         this.state = {
-            username: '',
+            email: '',
             password: '',
-
-            loginError: null,
         };
-    }
-
-    // componentDidMount
-    componentDidMount() {
-        // Firebase Auth
-        auth.onAuthStateChanged(res => {
-            if (res) {
-                this.props.dispatch(login(res));
-
-                this.props.history.push({
-                    pathname: "/",
-                    state: {}
-                });
-            }
-        });
     }
 
     // Form Input
@@ -44,15 +27,11 @@ class LoginView extends Component {
 
     // Button Handlers
     signInButtonClickHandler = (e) => {
-        auth.signInWithEmailAndPassword(this.state.username, this.state.password).then().catch(err => {
-            this.setState({ loginError: err });
-        });
+        this.props.dispatch(login(this.state.email, this.state.password))
     }
 
     googleSignInButtonClickHandler = (e) => {
-        auth.signInWithPopup(provider).then().catch(err => {
-            this.setState({ loginError: err });
-        });
+        this.props.dispatch(loginWithGoogle());
     }
 
     registerButtonClickHandler = (e) => {
@@ -61,44 +40,48 @@ class LoginView extends Component {
 
     // Render
     render() {
-        return (
-            <div className="login">
-                <div className="left">
-                    <img className="background" alt='' src={background} />
-                </div>
-
-                <div className="right">
-                    <div className="header">
-                        <h1 className="brand">Course Assign</h1>
+        if (this.props.auth.isAuthenticated) {
+            return <Redirect to="/" />;
+        } else { 
+            return (
+                <div className="login">
+                    <div className="left">
+                        <img className="background" alt='' src={background} />
                     </div>
 
-                    <Form className="form">
-                        { this.state.loginError && <Alert variant="danger">Invalid username/password combination!</Alert> }
-                        
-                        <Form.Group controlId="username">
-                            <Form.Control required name="username" onChange={this.textInput} placeholder='Username/Email'/>
-                        </Form.Group>
+                    <div className="right">
+                        <div className="header">
+                            <h1 className="brand">Course Assign</h1>
+                        </div>
 
-                        <Form.Group controlId="password">
-                            <Form.Control type="password" name="password" onChange={this.textInput} placeholder='Password'/>
-                        </Form.Group>
+                        <Form className="form">
+                            { this.props.auth.loginError && <Alert variant="danger">Invalid email/password combination!</Alert> }
+                            
+                            <Form.Group controlId="email">
+                                <Form.Control required name="email" onChange={this.textInput} placeholder='Email'/>
+                            </Form.Group>
 
-                        <Button block className="signin-button" onClick={this.signInButtonClickHandler}>Sign In</Button>
+                            <Form.Group controlId="password">
+                                <Form.Control type="password" name="password" onChange={this.textInput} placeholder='Password'/>
+                            </Form.Group>
 
-                        <Button block className="signin-button" onClick={this.googleSignInButtonClickHandler}>Sign In With Google</Button>
+                            <Button block className="signin-button" onClick={this.signInButtonClickHandler}>Sign In</Button>
 
-                        <Button block className="register-button" onClick={this.registerButtonClickHandler}>Register</Button>
-                    </Form>
+                            <Button block className="signin-button" onClick={this.googleSignInButtonClickHandler}>Sign In With Google</Button>
+
+                            <Button block className="register-button" onClick={this.registerButtonClickHandler}>Register</Button>
+                        </Form>
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
 const mapStateToProps = store => {
     return {
-        user: store.user,
+        auth: store.auth,
     }
 }
 
-export default connect(mapStateToProps, undefined)(LoginView);
+export default connect(mapStateToProps)(LoginView);
