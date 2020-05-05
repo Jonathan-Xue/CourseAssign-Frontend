@@ -1,43 +1,23 @@
-import { BASE_URL, MATCH_COURSES_REQUEST, MATCH_COURSES_SUCCESS, MATCH_COURSES_FAILED, MATCH_INSTRUCTORS_REQUEST, MATCH_INSTRUCTORS_SUCCESS, MATCH_INSTRUCTORS_FAILED } from '../constants/actionTypes';
+import { BASE_URL, MATCH_REQUEST, MATCH_SUCCESS, MATCH_FAILED } from '../constants/actionTypes';
 import axios from 'axios';
 
 // Actions
-const matchCoursesRequest = () => {
+const matchRequest = () => {
     return {
-        type: MATCH_COURSES_REQUEST,
+        type: MATCH_REQUEST,
     }
 }
 
-const matchCoursesSuccess = (res) => {
+const matchSuccess = (res) => {
     return {
-        type: MATCH_COURSES_SUCCESS,
+        type: MATCH_SUCCESS,
         payload: res,
     }
 }
 
-const matchCoursesFailed = (err) => {
+const matchFailed = (err) => {
     return {
-        type: MATCH_COURSES_FAILED,
-        payload: err,
-    }
-}
-
-const matchInstructorsRequest = () => {
-    return {
-        type: MATCH_INSTRUCTORS_REQUEST,
-    }
-}
-
-const matchInstructorsSuccess = (res) => {
-    return {
-        type: MATCH_INSTRUCTORS_SUCCESS,
-        payload: res,
-    }
-}
-
-const matchInstructorsFailed = (err) => {
-    return {
-        type: MATCH_INSTRUCTORS_FAILED,
+        type: MATCH_FAILED,
         payload: err,
     }
 }
@@ -45,7 +25,7 @@ const matchInstructorsFailed = (err) => {
 // Thunk
 // GET: '/matches/course/:courseNo/:courseName''
 export const matchInstructorsToCourse = (courseNo, courseName) => dispatch => {
-	dispatch(matchInstructorsRequest());
+	dispatch(matchRequest());
 
 	let body = {
 		crossDomain: true
@@ -55,15 +35,15 @@ export const matchInstructorsToCourse = (courseNo, courseName) => dispatch => {
 		BASE_URL + '/matches/course/' + courseNo + '/' + courseName, 
 		body
 	).then(res => {
-		dispatch(matchInstructorsSuccess(res));
+		dispatch(matchSuccess(res.data.data));
 	}).catch(err => {
-		dispatch(matchInstructorsFailed(err));
+		dispatch(matchFailed(err));
 	});
 }
 
 // GET: '/matches/instructor/<instructorId>'
 export const matchCoursesToInstructor = (instructorId) => dispatch => {
-	dispatch(matchCoursesRequest());
+	dispatch(matchRequest());
 
 	let body = {
 		crossDomain: true
@@ -73,8 +53,8 @@ export const matchCoursesToInstructor = (instructorId) => dispatch => {
 		BASE_URL + '/matches/instructor/' + instructorId, 
 		body
 	).then(res => {
-		dispatch(matchCoursesSuccess(res));
+		dispatch(matchSuccess(res.data.data));
 	}).catch(err => {
-		dispatch(matchCoursesFailed(err));
+		dispatch(matchFailed(err));
 	});
 }

@@ -2,8 +2,6 @@ import React from 'react';
 import { Alert, Button, Col, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
-import { deleteEntry } from '../../requests/entries.js'
-
 const initialState = {
     error: false,
 
@@ -45,7 +43,7 @@ class DeleteEntryModal extends React.Component {
         this.setState({ error: false });
 
         // Axios Request
-        deleteEntry(
+        /*deleteEntry(
             this.state.form.courseNo,
             this.state.form.courseName,
             this.state.form.year,
@@ -56,7 +54,7 @@ class DeleteEntryModal extends React.Component {
             this.props.close();
         }).catch(err => {
             console.log(err);
-        });
+        });*/
     }    
 
     // Close Modal

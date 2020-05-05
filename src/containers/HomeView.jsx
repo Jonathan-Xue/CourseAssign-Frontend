@@ -10,9 +10,9 @@ import NewInstructorModal from './modals/NewInstructorModal';
 import UpdateInstructorModal from './modals/UpdateInstructorModal';
 import DeleteInstructorModal from './modals/DeleteInstructorModal';
 import CardList from '../components/CardList';
+import LoadingButton from '../components/LoadingButton';
+import LoadingSpinner from '../components/LoadingSpinner';
 import './HomeView.scss';
-
-import { sampleCourses, sampleInstructors, sampleCoursesRanking, sampleInstructorsRanking } from './sampledata.js';
 
 import { connect } from 'react-redux';
 import { getEntries } from '../actions/entryActions';
@@ -41,9 +41,6 @@ class HomeView extends React.Component {
 
             responseFilter: null,
             responseSelection: null,
-            responseData: [],
-
-            data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet nunc vitae nisl ullamcorper volutpat. Aliquam in augue vitae felis pretium ornare quis non velit. Morbi aliquet ipsum convallis faucibus luctus. In scelerisque risus non enim consectetur, vel tincidunt eros tempor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque elementum lobortis rhoncus. Nullam sagittis pretium volutpat. Cras id tristique lacus. Cras arcu nisi, scelerisque commodo cursus sed, faucibus a ligula. Morbi iaculis nulla id fringilla laoreet. Praesent ornare tortor quis risus ullamcorper luctus. Proin viverra pulvinar tempor. Morbi at iaculis mi.",
         };
     }
 
@@ -125,35 +122,40 @@ class HomeView extends React.Component {
         this.setState({
             filter: e.target.value,
             selection: null,
-        })
+        });
     }
 
     handleDropdown = (e) => {
         this.setState({
             selection: e.target.value
-        })
+        });
     }
 
     search = (e) => {
         // TODO: API
         if (this.state.filter === "instructor") {
-            this.setState({
-                responseFilter: this.state.filter,
-                responseSelection: this.state.selection,
-                responseData: sampleCoursesRanking
-            })
+            if (this.state.selection) {
+                this.setState({
+                    responseFilter: this.state.filter,
+                    responseSelection: this.state.selection
+                });
+
+                this.props.dispatch(matchCoursesToInstructor(JSON.parse(this.state.selection).instructorId));
+            }
         } else if (this.state.filter === "course") {
-            this.setState({
-                responseFilter: this.state.filter,
-                responseSelection: this.state.selection,
-                responseData: sampleInstructorsRanking
-            })
+            if (this.state.selection) {
+                this.setState({
+                    responseFilter: this.state.filter,
+                    responseSelection: this.state.selection
+                });
+
+                this.props.dispatch(matchInstructorsToCourse(JSON.parse(this.state.selection).courseNo, JSON.parse(this.state.selection).courseName));
+            }
         } else {
             this.setState({
                 responseFilter: null,
-                responseSelection: null,
-                responseData: []
-            })
+                responseSelection: null
+            });
         }
     }
 
@@ -252,21 +254,27 @@ class HomeView extends React.Component {
                                         <Form.Control as="select" onChange={this.handleDropdown} custom>
                                             <option value={null}></option>
                                             { this.state.filter === "instructor"
-                                                ? sampleInstructors.map((instructor, i) => <option key={instructor + i} value={instructor}>{instructor}</option>)
+                                                ? this.props.instructorRequests.getInstructorResp && this.props.instructorRequests.getInstructorResp.map((instructor, i) => <option key={instructor.instructorId} value={JSON.stringify(instructor)}>{instructor.instructorName}</option>)
                                                 : this.state.filter === "course"
-                                                    ? sampleCourses.map((course, i) => <option key={course + i} value={course}>{course}</option>)
+                                                    ? this.props.courseRequests.getCourseResp && this.props.courseRequests.getCourseResp.map((course, i) => <option key={course.courseNo + course.courseName} value={JSON.stringify(course)}>{'CS ' + course.courseNo + ': ' + course.courseName}</option>)
                                                     : null
                                             }
                                         </Form.Control>
                                     </Form.Group>
 
                                     <Form.Group as={Col} md="2" controlId="">
-                                        <Button block onClick={this.search} variant="light">Search</Button>
+                                        { this.props.match.isMatching 
+                                            ? <LoadingButton block onClick={this.search} variant="light"/>
+                                            : <Button block onClick={this.search} variant="light">Search</Button>
+                                        }
                                     </Form.Group>
                                 </Form.Row>
                             </Form>
 
-                            <CardList filter={this.state.responseFilter} selection={this.state.responseSelection} data={this.state.responseData}/>
+                            { this.props.match.isMatching 
+                                ? <LoadingSpinner animation="border" role="status"/>
+                                : <CardList filter={this.state.responseFilter} selection={ this.state.responseFilter === "instructor" ? JSON.parse(this.state.responseSelection).instructorName : this.state.responseFilter === "course" ? JSON.parse(this.state.responseSelection).courseName : null} data={this.props.match.matchResp}/>
+                            }
                         </div>
                     </div>
                 </div>

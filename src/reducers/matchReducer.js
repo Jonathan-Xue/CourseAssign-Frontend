@@ -1,52 +1,30 @@
-import { MATCH_COURSES_REQUEST, MATCH_COURSES_SUCCESS, MATCH_COURSES_FAILED, MATCH_INSTRUCTORS_REQUEST, MATCH_INSTRUCTORS_SUCCESS, MATCH_INSTRUCTORS_FAILED } from '../constants/actionTypes';
+import { MATCH_REQUEST, MATCH_SUCCESS, MATCH_FAILED } from '../constants/actionTypes';
 
 const initialState = {
-	isMatchingCourses: false,
-	matchCoursesResp: null,
-	matchCoursesError: null,
-
-	isMatchingInstructors: false,
-	matchInstructorsResp: null,
-	matchInstructorsError: null,
+	isMatching: false,
+	matchResp: null,
+	matchError: null,
 }
 
 export default (state = initialState, action) => {
     switch(action.type) {
-    	case MATCH_COURSES_REQUEST:
+    	case MATCH_REQUEST:
     		return {
     			...state,
-    			isMatchingCourses: true,
-    			matchCoursesError: null,
+    			isMatching: true,
+    			matchError: null,
     		}
-    	case MATCH_COURSES_SUCCESS:
+    	case MATCH_SUCCESS:
     		return {
     			...state,
-    			isMatchingCourses: false,
-    			matchCoursesResp: action.payload,
+    			isMatching: false,
+    			matchResp: action.payload,
     		}
-    	case MATCH_COURSES_FAILED:
+    	case MATCH_FAILED:
     		return {
     			...state,
-    			isMatchingCourses: false,
-    			matchCoursesError: action.payload,
-    		}
-    	case MATCH_INSTRUCTORS_REQUEST:
-    		return {
-    			...state,
-    			isMatchingInstructors: true,
-    			matchInstructorsError: null,
-    		}
-    	case MATCH_INSTRUCTORS_SUCCESS:
-    		return {
-    			...state,
-    			isMatchingInstructors: false,
-    			matchInstructorsResp: action.payload,
-    		}
-    	case MATCH_INSTRUCTORS_FAILED:
-    		return {
-    			...state,
-    			isMatchingInstructors: false,
-    			matchInstructorsError: action.payload,
+    			isMatching: false,
+    			matchError: action.payload,
     		}
         default:
             return state;
