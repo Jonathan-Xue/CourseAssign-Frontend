@@ -65,7 +65,7 @@ class HomeView extends React.Component {
     openUpdateInstructorModal = () => { this.setState({ showUpdateInstructorModal: true }); };
     closeUpdateInstructorModal = () => { this.setState({ showUpdateInstructorModal: false }); };
 
-    // Find Entries
+    // Find
     findEntries = () => {
         getEntries().then(res => {
             this.setState({
@@ -74,13 +74,16 @@ class HomeView extends React.Component {
         });
     }
 
-    // Find Courses
     findCourses = () => {
         getCourses().then(res => {
             this.setState({
                 data: JSON.stringify(res.data.data, null, '\t')
             });
         });
+    }
+
+    findInstructors = () => {
+
     }
 
     // Select Menu
@@ -138,7 +141,10 @@ class HomeView extends React.Component {
 
                         <Accordion defaultActiveKey="-1">
                             <Card>
-                                <Accordion.Toggle as={Card.Header} eventKey="0">Entry Operations</Accordion.Toggle>
+                                <Accordion.Toggle as={Card.Header} eventKey="0">
+                                    <span>Entry Operations</span>
+                                    <span>&#9660;</span>
+                                </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <ListGroup className="list" variant="flush">
                                         <ListGroup.Item action className="list-item" onClick={this.openNewEntryModal}>Insert Entry</ListGroup.Item>
@@ -148,7 +154,10 @@ class HomeView extends React.Component {
                             </Card>
 
                             <Card>
-                                <Accordion.Toggle as={Card.Header} eventKey="1">Course Operations</Accordion.Toggle>
+                                <Accordion.Toggle as={Card.Header} eventKey="1">
+                                    <span>Course Operations</span>
+                                    <span>&#9660;</span>
+                                </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="1">
                                     <ListGroup className="list" variant="flush">
                                         <ListGroup.Item action className="list-item" onClick={this.openNewCourseModal}>Insert/Modify Course</ListGroup.Item>
@@ -158,7 +167,10 @@ class HomeView extends React.Component {
                             </Card>
 
                             <Card>
-                                <Accordion.Toggle as={Card.Header} eventKey="2">Instructor Operations</Accordion.Toggle>
+                                <Accordion.Toggle as={Card.Header} eventKey="2">
+                                    <span>Instructor Operations</span>
+                                    <span>&#9660;</span>
+                                </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="2">
                                     <ListGroup className="list" variant="flush">
                                         <ListGroup.Item action className="list-item" onClick={this.openNewInstructorModal}>Insert Instructor</ListGroup.Item>
@@ -168,11 +180,15 @@ class HomeView extends React.Component {
                             </Card>
 
                             <Card>
-                                <Accordion.Toggle as={Card.Header} eventKey="3">Find Operations</Accordion.Toggle>
+                                <Accordion.Toggle as={Card.Header} eventKey="3">
+                                    <span>Dataset Operations</span>
+                                    <span>&#9660;</span>
+                                </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="3">
                                     <ListGroup className="list" variant="flush">
                                         <ListGroup.Item action className="list-item" onClick={this.findEntries}>Find Grades</ListGroup.Item>
                                         <ListGroup.Item action className="list-item" onClick={this.findCourses}>Find Courses</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.findInstructors}>Find Instructors</ListGroup.Item>
                                     </ListGroup>
                                 </Accordion.Collapse>
                             </Card>
