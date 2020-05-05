@@ -4,7 +4,7 @@ import axios from 'axios';
 // Actions
 const getCourseRequest = () => {
     return {
-        type: COURSE_REQUEST,
+        type: GET_COURSE_REQUEST,
     }
 }
 
@@ -95,12 +95,11 @@ export const getCourses = () => dispatch => {
 	axios.get(
 		BASE_URL + '/courses', 
 		body
-	),then(res => {
-		dispatch(getCourseSuccess(res));
+	).then(res => {
+		dispatch(getCourseSuccess(res.data.data));
 	}).catch(err => {
 		dispatch(getCourseFailed(err));
 	});
-	return response;
 }
 
 // POST: '/courses'
@@ -117,7 +116,7 @@ export const createCourse = (courseNo, courseName, courseDesc) => dispatch => {
 	axios.post(
 		BASE_URL + '/courses', 
 		body
-	),then(res => {
+	).then(res => {
 		dispatch(postCourseSuccess(res));
 	}).catch(err => {
 		dispatch(postCourseFailed(err));

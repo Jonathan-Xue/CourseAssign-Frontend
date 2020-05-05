@@ -4,7 +4,7 @@ import axios from 'axios';
 // Actions
 const getInstructorRequest = () => {
     return {
-        type: INSTRUCTOR_REQUEST,
+        type: GET_INSTRUCTOR_REQUEST,
     }
 }
 
@@ -94,12 +94,11 @@ export const getInstructors = () => dispatch => {
     axios.get(
         BASE_URL + '/instructors', 
         body
-    ),then(res => {
-        dispatch(getInstructorSuccess(res));
+    ).then(res => {
+        dispatch(getInstructorSuccess(res.data.data));
     }).catch(err => {
         dispatch(getInstructorFailed(err));
     });
-    return response;
 }
 
 // POST: '/instructors'
@@ -115,7 +114,7 @@ export const createInstructor = (instructorName, researchInterests) => dispatch 
     axios.post(
         BASE_URL + '/instructors', 
         body
-    ),then(res => {
+    ).then(res => {
         dispatch(postInstructorSuccess(res));
     }).catch(err => {
         dispatch(postInstructorFailed(err));

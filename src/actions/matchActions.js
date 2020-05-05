@@ -54,12 +54,11 @@ export const matchInstructorsToCourse = (courseNo, courseName) => dispatch => {
 	axios.get(
 		BASE_URL + '/matches/course/' + courseNo + '/' + courseName, 
 		body
-	),then(res => {
+	).then(res => {
 		dispatch(matchInstructorsSuccess(res));
 	}).catch(err => {
 		dispatch(matchInstructorsFailed(err));
 	});
-	return response;
 }
 
 // GET: '/matches/instructor/<instructorId>'
@@ -73,10 +72,9 @@ export const matchCoursesToInstructor = (instructorId) => dispatch => {
 	axios.get(
 		BASE_URL + '/matches/instructor/' + instructorId, 
 		body
-	),then(res => {
+	).then(res => {
 		dispatch(matchCoursesSuccess(res));
 	}).catch(err => {
 		dispatch(matchCoursesFailed(err));
 	});
-	return response;
 }

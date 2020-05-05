@@ -11,10 +11,12 @@ import CardList from '../components/CardList';
 import './HomeView.scss';
 
 import { sampleCourses, sampleInstructors, sampleCoursesRanking, sampleInstructorsRanking } from './sampledata.js';
-import { getEntries } from '../requests/entries.js'
-import { getCourses } from '../requests/courses.js'
 
 import { connect } from 'react-redux';
+import { getEntries, createEntry, deleteEntry } from '../actions/entryActions';
+import { getCourses, createCourse, updateCourse, deleteCourse } from '../actions/courseActions';
+import { getInstructors, createInstructor, updateInstructor, deleteInstructor } from '../actions/instructorActions';
+import { matchInstructorsToCourse, matchCoursesToInstructor } from '../actions/matchActions';
 
 class HomeView extends React.Component {
     constructor() {
@@ -40,7 +42,28 @@ class HomeView extends React.Component {
             data: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed imperdiet nunc vitae nisl ullamcorper volutpat. Aliquam in augue vitae felis pretium ornare quis non velit. Morbi aliquet ipsum convallis faucibus luctus. In scelerisque risus non enim consectetur, vel tincidunt eros tempor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque elementum lobortis rhoncus. Nullam sagittis pretium volutpat. Cras id tristique lacus. Cras arcu nisi, scelerisque commodo cursus sed, faucibus a ligula. Morbi iaculis nulla id fringilla laoreet. Praesent ornare tortor quis risus ullamcorper luctus. Proin viverra pulvinar tempor. Morbi at iaculis mi.",
         };
     }
+
+    // Lifecycle Methods
+    componentDidMount() {
+        console.log("\n\n\n\n\nMount\n\n\n\n\n");
+        this.refreshData()
+    }
     
+    componentWillUnmount() {
+        clearTimeout(this.timer);
+    }
+
+    // Refresh Data
+    refreshData = () => {
+        // Get Data
+        this.props.dispatch(getEntries());
+        this.props.dispatch(getCourses());
+        this.props.dispatch(getInstructors());
+
+        // Recursive Call Every Sixty Seconds
+        this.timer = setTimeout(this.refreshData, 60000);
+    }
+
     // New Entry Modal
     openNewEntryModal = () => { this.setState({ showNewEntryModal: true }); };
     closeNewEntryModal = () => { this.setState({ showNewEntryModal: false }); };
@@ -67,23 +90,33 @@ class HomeView extends React.Component {
 
     // Find
     findEntries = () => {
-        getEntries().then(res => {
-            this.setState({
-                data: JSON.stringify(res.data.data, null, '\t')
-            });
-        });
+        // Open Current Version
+        if (this.props.entryRequests.getEntryResp) {
+            let doc = window.open('data:application/json,');
+            doc.document.open();
+            doc.document.write('<html><body><pre>' + JSON.stringify(this.props.entryRequests.getEntryResp, null, 4) + '</pre></body></html>');
+            doc.document.close();
+        }
     }
 
     findCourses = () => {
-        getCourses().then(res => {
-            this.setState({
-                data: JSON.stringify(res.data.data, null, '\t')
-            });
-        });
+        // Open Current Version
+        if (this.props.courseRequests.getCourseResp) {
+            let doc = window.open('data:application/json,');
+            doc.document.open();
+            doc.document.write('<html><body><pre>' + JSON.stringify(this.props.courseRequests.getCourseResp, null, 4) + '</pre></body></html>');
+            doc.document.close();
+        }
     }
 
     findInstructors = () => {
-
+        // Open Current Version
+        if (this.props.instructorRequests.getInstructorResp) {
+            let doc = window.open('data:application/json,');
+            doc.document.open();
+            doc.document.write('<html><body><pre>' + JSON.stringify(this.props.instructorRequests.getInstructorResp, null, 4) + '</pre></body></html>');
+            doc.document.close();
+        }
     }
 
     // Select Menu
@@ -132,10 +165,8 @@ class HomeView extends React.Component {
                     <div className="left">
                         <NewEntryModal visibility={this.state.showNewEntryModal} close={this.closeNewEntryModal}/>
                         <DeleteEntryModal visibility={this.state.showDeleteEntryModal} close={this.closeDeleteEntryModal}/>
-
                         <NewCourseModal visibility={this.state.showNewCourseModal} close={this.closeNewCourseModal}/>
                         <DeleteCourseModal visibility={this.state.showDeleteCourseModal} close={this.closeDeleteCourseModal}/>
-
                         <NewInstructorModal visibility={this.state.showNewInstructorModal} close={this.closeNewInstructorModal}/>
                         <UpdateInstructorModal visibility={this.state.showUpdateInstructorModal} close={this.closeUpdateInstructorModal}/>
 
@@ -181,14 +212,14 @@ class HomeView extends React.Component {
 
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="3">
-                                    <span>Dataset Operations</span>
+                                    <span>Dataset Visualizations</span>
                                     <span>&#9660;</span>
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="3">
                                     <ListGroup className="list" variant="flush">
-                                        <ListGroup.Item action className="list-item" onClick={this.findEntries}>Find Grades</ListGroup.Item>
-                                        <ListGroup.Item action className="list-item" onClick={this.findCourses}>Find Courses</ListGroup.Item>
-                                        <ListGroup.Item action className="list-item" onClick={this.findInstructors}>Find Instructors</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.findEntries}>View Entries</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.findCourses}>View Courses</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.findInstructors}>View Instructors</ListGroup.Item>
                                     </ListGroup>
                                 </Accordion.Collapse>
                             </Card>
@@ -241,7 +272,11 @@ class HomeView extends React.Component {
 
 const mapStateToProps = store => {
     return {
-        auth: store.auth
+        auth: store.auth,
+        entryRequests: store.entryRequests,
+        courseRequests: store.courseRequests,
+        instructorRequests: store.instructorRequests,
+        match: store.match,
     }
 }
 

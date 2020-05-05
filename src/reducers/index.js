@@ -12,7 +12,7 @@ const createRootReducer = (history) => combineReducers({
     auth: authReducer,
     entryRequests: entryReducer,
     courseRequests: courseReducer,
-    instructorReducer: instructorReducer,
+    instructorRequests: instructorReducer,
     match: matchReducer,
 });
 

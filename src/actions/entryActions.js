@@ -4,7 +4,7 @@ import axios from 'axios';
 // Actions
 const getEntryRequest = () => {
     return {
-        type: ENTRY_REQUEST,
+        type: GET_ENTRY_REQUEST,
     }
 }
 
@@ -75,9 +75,9 @@ export const getEntries = () => dispatch => {
 		BASE_URL + '/entries', 
 		body
 	).then(res => {
-		dispatch(getEntrySuccess(res));
+		dispatch(getEntrySuccess(res.data.data));
 	}).catch(err => {
-		dispatch(getEntryError(err));
+		dispatch(getEntryFailed(err));
 	});
 };
 
@@ -113,7 +113,7 @@ export const createEntry = (courseNo, courseName, year, term, primaryInstructor,
 	).then(res => {
 		dispatch(postEntrySuccess(res));
 	}).catch(err => {
-		dispatch(postEntryFailed(res));
+		dispatch(postEntryFailed(err));
 	});
 }
 
@@ -131,6 +131,6 @@ export const deleteEntry = ( courseNo, courseName, year, term, primaryInstructor
 	).then(res => {
 		dispatch(deleteEntrySuccess(res));
 	}).catch(err => {
-		dispatch(deleteEntryFailed(res));
+		dispatch(deleteEntryFailed(err));
 	})
 }
