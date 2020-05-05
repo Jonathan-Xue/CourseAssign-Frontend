@@ -45,13 +45,13 @@ const verifyRequest = () => {
     return {
         type: VERIFY_REQUEST,
     };
-};
+}
 
 const verifySuccess = () => {
     return {
         type: VERIFY_SUCCESS,
     };
-};
+}
 
 // Thunk
 export const login = (email, password) => dispatch => {
