@@ -36,6 +36,7 @@ class LoginView extends Component {
 
     registerButtonClickHandler = (e) => {
         // TODO:
+        alert("Registration is currently disabled. Please sign-in through Google.")
     }
 
     // Render

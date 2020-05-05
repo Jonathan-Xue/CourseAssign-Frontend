@@ -12,18 +12,28 @@
         overflow: auto;
         flex: 25%;
 
-        .list {
-            border: 1px solid rgba(0, 0, 0, 0.125);
-            border-left-width: 0;
-            border-right-width: 0;
+        .card {
+            background-color: $desert_sand;
+            border-radius: 0;
 
-            .list-item {
-                background-color: $desert_sand;
-                text-align: center;
+            .card-header {
+                background-color: rgba(0, 0, 0, 0.025);
+                color: #495057;
             }
 
-            .list-item:hover {
-                filter: brightness(0.975);
+            .list {
+                border: 1px solid rgba(0, 0, 0, 0.125);
+                border-left-width: 0;
+                border-right-width: 0;
+                
+                .list-item {
+                    background-color: $desert_sand;
+                    text-align: center;
+                }
+
+                .list-item:hover {
+                    filter: brightness(0.975);
+                }
             }
         }
     }

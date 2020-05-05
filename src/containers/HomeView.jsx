@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button, Col, Form, InputGroup, ListGroup } from 'react-bootstrap';
+import { Accordion, Card, Button, Col, Form, InputGroup, ListGroup } from 'react-bootstrap';
 import NavBar from './NavBar';
 import NewEntryModal from '../components/modals/NewEntryModal';
 import DeleteEntryModal from '../components/modals/DeleteEntryModal';
 import NewCourseModal from '../components/modals/NewCourseModal';
 import DeleteCourseModal from '../components/modals/DeleteCourseModal';
+import NewInstructorModal from '../components/modals/NewInstructorModal';
+import UpdateInstructorModal from '../components/modals/UpdateInstructorModal';
 import CardList from '../components/CardList';
 import './HomeView.scss';
 
@@ -24,6 +26,9 @@ class HomeView extends React.Component {
 
             showNewCourseModal: false,
             showDeleteCourseModal: false,
+
+            showNewInstructorModal: false,
+            showUpdateInstructorModal: false,
 
             filter: null,
             selection: null,
@@ -51,6 +56,14 @@ class HomeView extends React.Component {
     // Delete Course Modal
     openDeleteCourseModal = () => { this.setState({ showDeleteCourseModal: true }); };
     closeDeleteCourseModal = () => { this.setState({ showDeleteCourseModal: false }); };
+
+    // New Instructor Modal
+    openNewInstructorModal = () => { this.setState({ showNewInstructorModal: true }); };
+    closeNewInstructorModal = () => { this.setState({ showNewInstructorModal: false }); };
+
+    // Update Instructor Modal
+    openUpdateInstructorModal = () => { this.setState({ showUpdateInstructorModal: true }); };
+    closeUpdateInstructorModal = () => { this.setState({ showUpdateInstructorModal: false }); };
 
     // Find Entries
     findEntries = () => {
@@ -120,14 +133,50 @@ class HomeView extends React.Component {
                         <NewCourseModal visibility={this.state.showNewCourseModal} close={this.closeNewCourseModal}/>
                         <DeleteCourseModal visibility={this.state.showDeleteCourseModal} close={this.closeDeleteCourseModal}/>
 
-                        <ListGroup className="list" variant="flush">
-                            <ListGroup.Item action className="list-item" onClick={this.openNewEntryModal}>Insert Entry</ListGroup.Item>
-                            <ListGroup.Item action className="list-item" onClick={this.openDeleteEntryModal}>Delete Entry</ListGroup.Item>
-                            <ListGroup.Item action className="list-item" onClick={this.openNewCourseModal}>Insert/Modify Course</ListGroup.Item>
-                            <ListGroup.Item action className="list-item" onClick={this.openDeleteCourseModal}>Delete Course</ListGroup.Item>
-                            <ListGroup.Item action className="list-item" onClick={this.findEntries}>Find Grades</ListGroup.Item>
-                            <ListGroup.Item action className="list-item" onClick={this.findCourses}>Find Courses</ListGroup.Item>
-                        </ListGroup>
+                        <NewInstructorModal visibility={this.state.showNewInstructorModal} close={this.closeNewInstructorModal}/>
+                        <UpdateInstructorModal visibility={this.state.showUpdateInstructorModal} close={this.closeUpdateInstructorModal}/>
+
+                        <Accordion defaultActiveKey="-1">
+                            <Card>
+                                <Accordion.Toggle as={Card.Header} eventKey="0">Entry Operations</Accordion.Toggle>
+                                <Accordion.Collapse eventKey="0">
+                                    <ListGroup className="list" variant="flush">
+                                        <ListGroup.Item action className="list-item" onClick={this.openNewEntryModal}>Insert Entry</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.openDeleteEntryModal}>Delete Entry</ListGroup.Item>
+                                    </ListGroup>
+                                </Accordion.Collapse>
+                            </Card>
+
+                            <Card>
+                                <Accordion.Toggle as={Card.Header} eventKey="1">Course Operations</Accordion.Toggle>
+                                <Accordion.Collapse eventKey="1">
+                                    <ListGroup className="list" variant="flush">
+                                        <ListGroup.Item action className="list-item" onClick={this.openNewCourseModal}>Insert/Modify Course</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.openDeleteCourseModal}>Delete Course</ListGroup.Item>
+                                    </ListGroup>
+                                </Accordion.Collapse>
+                            </Card>
+
+                            <Card>
+                                <Accordion.Toggle as={Card.Header} eventKey="2">Instructor Operations</Accordion.Toggle>
+                                <Accordion.Collapse eventKey="2">
+                                    <ListGroup className="list" variant="flush">
+                                        <ListGroup.Item action className="list-item" onClick={this.openNewInstructorModal}>Insert Instructor</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.openUpdateInstructorModal}>Update Instructor</ListGroup.Item>
+                                    </ListGroup>
+                                </Accordion.Collapse>
+                            </Card>
+
+                            <Card>
+                                <Accordion.Toggle as={Card.Header} eventKey="3">Find Operations</Accordion.Toggle>
+                                <Accordion.Collapse eventKey="3">
+                                    <ListGroup className="list" variant="flush">
+                                        <ListGroup.Item action className="list-item" onClick={this.findEntries}>Find Grades</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.findCourses}>Find Courses</ListGroup.Item>
+                                    </ListGroup>
+                                </Accordion.Collapse>
+                            </Card>
+                        </Accordion>
                     </div>
 
                     <div className="right">
