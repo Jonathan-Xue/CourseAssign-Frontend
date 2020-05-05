@@ -85,7 +85,7 @@ const deleteCourseFailed = (err) => {
 
 // Thunk
 // GET: '/courses'
-export const getCourses = () => dispatch => {
+export const getCourses = () => dispatch => new Promise((resolve, reject) => {
 	dispatch(getCourseRequest());
 
 	let body = {
@@ -97,13 +97,16 @@ export const getCourses = () => dispatch => {
 		body
 	).then(res => {
 		dispatch(getCourseSuccess(res.data.data));
+		resolve(res.data.data);
 	}).catch(err => {
 		dispatch(getCourseFailed(err));
+		reject(err);
 	});
-}
+})
+
 
 // POST: '/courses'
-export const createCourse = (courseNo, courseName, courseDesc) => dispatch => {
+export const createCourse = (courseNo, courseName, courseDesc) => dispatch => new Promise((resolve, reject) => {
 	dispatch(postCourseRequest());
 
 	let body = {
@@ -118,13 +121,15 @@ export const createCourse = (courseNo, courseName, courseDesc) => dispatch => {
 		body
 	).then(res => {
 		dispatch(postCourseSuccess(res));
+		resolve(res);
 	}).catch(err => {
 		dispatch(postCourseFailed(err));
+		reject(err);
 	});
-}
+});
 
 // PUT: '/courses/:courseNo/:courseName'
-export const updateCourse = (courseNo, courseName, courseDesc) => dispatch => {
+export const updateCourse = (courseNo, courseName, courseDesc) => dispatch => new Promise((resolve, reject) => {
 	dispatch(putCourseRequest());
 	
 	let body = {
@@ -137,13 +142,15 @@ export const updateCourse = (courseNo, courseName, courseDesc) => dispatch => {
 		body
 	).then(res => {
 		dispatch(putCourseSuccess(res));
+		resolve(res);
 	}).catch(err => {
 		dispatch(putCourseFailed(err));
+		reject(err);
 	});
-}
+});
 
 // DELETE: '/courses/:courseNo/:courseName'
-export const deleteCourse = (courseNo, courseName) => dispatch => {
+export const deleteCourse = (courseNo, courseName) => dispatch => new Promise((resolve, reject) => {
 	dispatch(deleteCourseRequest());
 
 	let body = {
@@ -155,7 +162,9 @@ export const deleteCourse = (courseNo, courseName) => dispatch => {
 		body
 	).then(res => {
 		dispatch(deleteCourseSuccess(res));
+		resolve(res);
 	}).catch(err => {
 		dispatch(deleteCourseFailed(err));
+		reject(err);
 	});
-}
+});

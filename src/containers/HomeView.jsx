@@ -53,15 +53,15 @@ class HomeView extends React.Component {
         clearTimeout(this.timer);
     }
 
-    // Refresh Data
+    // Refresh Data Every Sixty Seconds
     refreshData = () => {
-        // Get Data
-        this.props.dispatch(getEntries());
-        this.props.dispatch(getCourses());
-        this.props.dispatch(getInstructors());
-
-        // Recursive Call Every Sixty Seconds
-        this.timer = setTimeout(this.refreshData, 60000);
+        Promise.all([
+            this.props.dispatch(getEntries()),
+            this.props.dispatch(getCourses()),
+            this.props.dispatch(getInstructors())
+        ]).then(res => {
+            this.timer = setTimeout(this.refreshData, 60000);
+        }).catch(err => {});
     }
 
     // New Entry Modal
@@ -88,35 +88,32 @@ class HomeView extends React.Component {
     openUpdateInstructorModal = () => { this.setState({ showUpdateInstructorModal: true }); };
     closeUpdateInstructorModal = () => { this.setState({ showUpdateInstructorModal: false }); };
 
-    // Find
+    // Open Current Version
     findEntries = () => {
-        // Open Current Version
-        if (this.props.entryRequests.getEntryResp) {
+        this.props.dispatch(getEntries()).then(res => {
             let doc = window.open('data:application/json,');
             doc.document.open();
-            doc.document.write('<html><body><pre>' + JSON.stringify(this.props.entryRequests.getEntryResp, null, 4) + '</pre></body></html>');
+            doc.document.write('<html><body><pre>' + JSON.stringify(res, null, 4) + '</pre></body></html>');
             doc.document.close();
-        }
+        }).catch(err => {});
     }
 
     findCourses = () => {
-        // Open Current Version
-        if (this.props.courseRequests.getCourseResp) {
+        this.props.dispatch(getCourses()).then(res => {
             let doc = window.open('data:application/json,');
             doc.document.open();
-            doc.document.write('<html><body><pre>' + JSON.stringify(this.props.courseRequests.getCourseResp, null, 4) + '</pre></body></html>');
+            doc.document.write('<html><body><pre>' + JSON.stringify(res, null, 4) + '</pre></body></html>');
             doc.document.close();
-        }
+        }).catch(err => {});
     }
 
     findInstructors = () => {
-        // Open Current Version
-        if (this.props.instructorRequests.getInstructorResp) {
+        this.props.dispatch(getInstructors()).then(res => {
             let doc = window.open('data:application/json,');
             doc.document.open();
-            doc.document.write('<html><body><pre>' + JSON.stringify(this.props.instructorRequests.getInstructorResp, null, 4) + '</pre></body></html>');
+            doc.document.write('<html><body><pre>' + JSON.stringify(res, null, 4) + '</pre></body></html>');
             doc.document.close();
-        }
+        }).catch(err => {});
     }
 
     // Select Menu
@@ -212,14 +209,14 @@ class HomeView extends React.Component {
 
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="3">
-                                    <span>Dataset Visualizations</span>
+                                    <span>Dataset Operations</span>
                                     <span>&#9660;</span>
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="3">
                                     <ListGroup className="list" variant="flush">
-                                        <ListGroup.Item action className="list-item" onClick={this.findEntries}>View Entries</ListGroup.Item>
-                                        <ListGroup.Item action className="list-item" onClick={this.findCourses}>View Courses</ListGroup.Item>
-                                        <ListGroup.Item action className="list-item" onClick={this.findInstructors}>View Instructors</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.findEntries}>Find Entries</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.findCourses}>Find Courses</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.findInstructors}>Find Instructors</ListGroup.Item>
                                     </ListGroup>
                                 </Accordion.Collapse>
                             </Card>

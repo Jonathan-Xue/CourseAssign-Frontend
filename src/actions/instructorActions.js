@@ -84,7 +84,7 @@ const deleteInstructorFailed = (err) => {
 
 // Thunk
 // GET: '/instructors'
-export const getInstructors = () => dispatch => {
+export const getInstructors = () => dispatch => new Promise((resolve, reject) => {
     dispatch(getInstructorRequest());
 
     let body = {
@@ -96,13 +96,15 @@ export const getInstructors = () => dispatch => {
         body
     ).then(res => {
         dispatch(getInstructorSuccess(res.data.data));
+        resolve(res.data.data);
     }).catch(err => {
         dispatch(getInstructorFailed(err));
+        reject(err);
     });
-}
+});
 
 // POST: '/instructors'
-export const createInstructor = (instructorName, researchInterests) => dispatch => {
+export const createInstructor = (instructorName, researchInterests) => dispatch => new Promise((resolve, reject) => {
     dispatch(postInstructorRequest());
 
     let body = {
@@ -116,13 +118,15 @@ export const createInstructor = (instructorName, researchInterests) => dispatch 
         body
     ).then(res => {
         dispatch(postInstructorSuccess(res));
+        resolve(res);
     }).catch(err => {
         dispatch(postInstructorFailed(err));
+        reject(err);
     });
-}
+});
 
 // PUT: '/instructors/:instructorId'
-export const updateInstructor = (instructorId, instructorName, researchInterests) => dispatch => {
+export const updateInstructor = (instructorId, instructorName, researchInterests) => dispatch => new Promise((resolve, reject) => {
     dispatch(putInstructorRequest());
     
     let body = {
@@ -136,13 +140,15 @@ export const updateInstructor = (instructorId, instructorName, researchInterests
         body
     ).then(res => {
         dispatch(putInstructorSuccess(res));
+        resolve(res);
     }).catch(err => {
         dispatch(putInstructorFailed(err));
+        reject(err);
     });
-}
+});
 
 // DELETE: '/courses/:courseNo/:courseName'
-export const deleteInstructor = (instructorId, instructorName, researchInterests) => dispatch => {
+export const deleteInstructor = (instructorId, instructorName, researchInterests) => dispatch => new Promise((resolve, reject) => {
     dispatch(deleteInstructorRequest());
 
     let body = {
@@ -154,7 +160,9 @@ export const deleteInstructor = (instructorId, instructorName, researchInterests
         body
     ).then(res => {
         dispatch(deleteInstructorSuccess(res));
+        resolve(res);
     }).catch(err => {
         dispatch(deleteInstructorFailed(err));
+        reject(err);
     });
-}
+});

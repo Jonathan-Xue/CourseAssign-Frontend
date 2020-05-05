@@ -64,7 +64,7 @@ const deleteEntryFailed = (err) => {
 
 // Thunk
 // GET: '/courses'
-export const getEntries = () => dispatch => {
+export const getEntries = () => dispatch => new Promise((resolve, reject) => {
 	dispatch(getEntryRequest());
 
 	let body = { 
@@ -76,13 +76,15 @@ export const getEntries = () => dispatch => {
 		body
 	).then(res => {
 		dispatch(getEntrySuccess(res.data.data));
+		resolve(res.data.data);
 	}).catch(err => {
 		dispatch(getEntryFailed(err));
+		reject(err);
 	});
-};
+});
 
 // POST: '/entries'
-export const createEntry = (courseNo, courseName, year, term, primaryInstructor, aPlus, a, aMinus, bPlus, b, bMinus, cPlus, c, cMinus, dPlus, d, dMinus, f) => dispatch => {
+export const createEntry = (courseNo, courseName, year, term, primaryInstructor, aPlus, a, aMinus, bPlus, b, bMinus, cPlus, c, cMinus, dPlus, d, dMinus, f) => dispatch => new Promise((resolve, reject) => {
 	dispatch(postEntryRequest());
 
 	let body = {
@@ -112,13 +114,15 @@ export const createEntry = (courseNo, courseName, year, term, primaryInstructor,
 		body
 	).then(res => {
 		dispatch(postEntrySuccess(res));
+		resolve(res);
 	}).catch(err => {
 		dispatch(postEntryFailed(err));
+		reject(err);
 	});
-}
+});
 
 // DELETE: '/entries/:courseNo/:courseName/:year/:term/:primaryInstructor'
-export const deleteEntry = ( courseNo, courseName, year, term, primaryInstructor) => dispatch => {
+export const deleteEntry = ( courseNo, courseName, year, term, primaryInstructor) => dispatch => new Promise((resolve, reject) => {
 	dispatch(deleteEntryRequest());
 	
 	let body = {
@@ -130,7 +134,9 @@ export const deleteEntry = ( courseNo, courseName, year, term, primaryInstructor
 		body
 	).then(res => {
 		dispatch(deleteEntrySuccess(res));
+		resolve(res);
 	}).catch(err => {
 		dispatch(deleteEntryFailed(err));
+		reject(err);
 	})
-}
+});
