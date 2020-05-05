@@ -2,7 +2,8 @@ import React from 'react';
 import { Alert, Button, Col, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
-import { createEntry } from '../../requests/entries.js'
+import { connect } from 'react-redux';
+import { getEntries, createEntry } from '../../actions/entryActions';
 
 const initialState = {
     error: false,
@@ -57,29 +58,13 @@ class NewEntryModal extends React.Component {
         }
         this.setState({ error: false });
 
-        // Axios Request
-        createEntry(
-            this.state.form.courseNo,
-            this.state.form.courseName,
-            this.state.form.year,
-            this.state.form.term,
-            this.state.form.primaryInstructor,
-            this.state.form.aPlus,
-            this.state.form.a,
-            this.state.form.aMinus,
-            this.state.form.bPlus,
-            this.state.form.b,
-            this.state.form.bMinus,
-            this.state.form.cPlus,
-            this.state.form.c,
-            this.state.form.cMinus,
-            this.state.form.dPlus,
-            this.state.form.d,
-            this.state.form.dMinus,
-            this.state.form.f
-        ).then(res => {
-            // Close Form
-            this.props.close();
+        // Redux Call
+        this.props.dispatch(createEntry(this.state.form.courseNo, this.state.form.courseName, this.state.form.year, this.state.form.term, this.state.form.primaryInstructor, this.state.form.aPlus, this.state.form.a, this.state.form.aMinus, this.state.form.bPlus, this.state.form.b, this.state.form.bMinus, this.state.form.cPlus, this.state.form.c, this.state.form.cMinus, this.state.form.dPlus, this.state.form.d, this.state.form.dMinus, this.state.form.f)).then(res => {
+            this.props.dispatch(getEntries()).then(res => {
+                this.props.close();
+            }).catch(err => {
+                console.log(err);
+            });
         }).catch(err => {
             console.log(err);
         });
@@ -192,4 +177,4 @@ class NewEntryModal extends React.Component {
     };
 };
 
-export default NewEntryModal;
+export default connect()(NewEntryModal);

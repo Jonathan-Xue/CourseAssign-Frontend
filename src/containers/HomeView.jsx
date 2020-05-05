@@ -15,9 +15,9 @@ import './HomeView.scss';
 import { sampleCourses, sampleInstructors, sampleCoursesRanking, sampleInstructorsRanking } from './sampledata.js';
 
 import { connect } from 'react-redux';
-import { getEntries, createEntry, deleteEntry } from '../actions/entryActions';
-import { getCourses, createCourse, updateCourse, deleteCourse } from '../actions/courseActions';
-import { getInstructors, createInstructor, updateInstructor, deleteInstructor } from '../actions/instructorActions';
+import { getEntries } from '../actions/entryActions';
+import { getCourses } from '../actions/courseActions';
+import { getInstructors } from '../actions/instructorActions';
 import { matchInstructorsToCourse, matchCoursesToInstructor } from '../actions/matchActions';
 
 class HomeView extends React.Component {
@@ -49,7 +49,6 @@ class HomeView extends React.Component {
 
     // Lifecycle Methods
     componentDidMount() {
-        console.log("\n\n\n\n\nMount\n\n\n\n\n");
         this.refreshData()
     }
     
