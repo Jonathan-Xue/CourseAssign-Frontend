@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d27f0af8c11bdf9917761ad78e6a7639",
+    "revision": "20afe78526db84ddbf2a1a9ef7809c12",
     "url": "/CourseAssign/index.html"
   },
   {
-    "revision": "413190f7eef5eba583ff",
-    "url": "/CourseAssign/static/css/main.e9916617.chunk.css"
+    "revision": "388c9feb75bcf5292551",
+    "url": "/CourseAssign/static/css/main.cb7bfb54.chunk.css"
   },
   {
-    "revision": "30c6e0ce4cf18489d639",
-    "url": "/CourseAssign/static/js/2.74b13220.chunk.js"
+    "revision": "fc6e61c7dfb2680bb328",
+    "url": "/CourseAssign/static/js/2.cda88ca9.chunk.js"
   },
   {
     "revision": "7585d7e2191ead1c7fd01d7ebe90ade7",
-    "url": "/CourseAssign/static/js/2.74b13220.chunk.js.LICENSE.txt"
+    "url": "/CourseAssign/static/js/2.cda88ca9.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "413190f7eef5eba583ff",
-    "url": "/CourseAssign/static/js/main.322df5d5.chunk.js"
+    "revision": "388c9feb75bcf5292551",
+    "url": "/CourseAssign/static/js/main.9414ad8a.chunk.js"
   },
   {
     "revision": "fc77a2f34eecc975e68d",
