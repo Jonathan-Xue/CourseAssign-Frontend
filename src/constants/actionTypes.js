@@ -1,6 +1,3 @@
-export const SAMPLE_ACTION_TYPE = "SAMPLE_ACTION_TYPE";
-export const BASE_URL = 'https://cs411-project-273718.uc.r.appspot.com/';
-
 // Auth Actions
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";

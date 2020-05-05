@@ -6,7 +6,6 @@ const LoadingButton = (props) => {
     return (
 		<Button {...props} disabled>
 			<Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true"/>
-			Loading...
 		</Button>
     );
 }

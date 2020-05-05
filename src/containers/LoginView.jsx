@@ -52,7 +52,7 @@ class LoginView extends Component {
 
                     <div className="right">
                         <div className="header">
-                            <h1 className="brand">Course Assign</h1>
+                            <h1 className="brand">CourseAssign</h1>
                         </div>
 
                         <Form className="form">

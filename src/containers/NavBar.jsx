@@ -28,7 +28,7 @@ class NavBar extends Component {
             <Navbar bg="dark" className="navbar" expand="sm" sticky="top" variant="dark">
                 <Navbar.Brand>
                     <img className="d-inline-block align-top" src={logo} alt="" width="30" height="30"/>
-                    Course Assign
+                    CourseAssign
                 </Navbar.Brand>
 
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
@@ -38,7 +38,7 @@ class NavBar extends Component {
                     </Nav>
 
                     <Navbar.Text className="text">
-                        Signed In As: <Link to="/profile">{this.props.auth.profile.email.substring(0, this.props.auth.profile.email.lastIndexOf("@"))}</Link>
+                        Signed In As: <Link to="/">{this.props.auth.profile.email.substring(0, this.props.auth.profile.email.lastIndexOf("@"))}</Link>
                     </Navbar.Text>
                     <Nav.Item>
                         <Button variant="danger" onClick={this.signoutButtonClickHandler}>Logout</Button>

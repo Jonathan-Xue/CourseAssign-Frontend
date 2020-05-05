@@ -66,7 +66,7 @@ class NewCourseModal extends React.Component {
         return (
             <Modal size="lg" show={this.props.visibility} onHide={this.close}>
                 <Modal.Header closeButton>
-                    <Modal.Title>New/Update Course</Modal.Title>
+                    <Modal.Title>New Course</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
