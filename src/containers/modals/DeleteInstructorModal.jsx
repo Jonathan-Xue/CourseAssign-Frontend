@@ -72,7 +72,7 @@ class DeleteInstructorModal extends React.Component {
                     <Form>
                         <Form.Group controlId="instructorName">
                             <Form.Control as="select" onChange={this.handleNameSelect} custom>
-                                <option value={null}>---instructor name---</option>
+                                <option className="initial-option" value={null}>Instructor Name</option>
                                 { this.props.instructors && this.props.instructors.map((instructor, i) => <option key={instructor.instructorId} value={JSON.stringify(instructor)}>{instructor.instructorName}</option>) }
                             </Form.Control>
                         </Form.Group>

@@ -105,14 +105,14 @@ class UpdateCourseModal extends React.Component {
                     <Form>
                        <Form.Group controlId="courseNo">
                             <Form.Control as="select" onChange={this.handleNumberSelect} custom>
-                                <option value={null}>---course no---</option>
+                                <option className="initial-option" value={null}>Course No.</option>
                                 { Object.keys(courseMap).map((courseNo, i) => <option key={courseNo + courseMap[courseNo]} value={courseNo}>{courseNo}</option>) }
                             </Form.Control>
                         </Form.Group>
                             
                         <Form.Group controlId="courseName">
                             <Form.Control as="select" onChange={this.handleNameSelect} custom>
-                                <option value={null}>---course name---</option>
+                                <option className="initial-option" value={null}>Course Name</option>
                                 { courseMap[this.state.form.courseNo] && courseMap[this.state.form.courseNo].map((courseName, i) => <option key={this.state.form.courseNo + courseName} value={courseName}>{courseName}</option>) }
                             </Form.Control>
                         </Form.Group>

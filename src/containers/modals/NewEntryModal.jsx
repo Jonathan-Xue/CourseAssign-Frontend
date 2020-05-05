@@ -47,6 +47,57 @@ class NewEntryModal extends React.Component {
         });
     }
 
+    // Select
+    handleNumberSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                courseNo: parseInt(e.target.value),
+            }
+        });
+    }
+
+    handleNameSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                courseName: e.target.value,
+            }
+        });
+    }
+
+    handleYearSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                year: parseInt(e.target.value),
+            }
+        });
+    }
+
+    handleTermSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                term: e.target.value,
+            }
+        });
+    }
+
+    handleInstructorSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                primaryInstructor: parseInt(e.target.value),
+            }
+        });
+    }
+
     // Save Changes To Database
     submit = (e) => {
         // Check All Fields Valid
@@ -78,6 +129,34 @@ class NewEntryModal extends React.Component {
 
     // Render
     render() {
+        // Course Map
+        let courseMap = {};
+        if (this.props.courses) {
+            this.props.courses.forEach(course => {
+                if (!courseMap.hasOwnProperty(course.courseNo)) {
+                    courseMap[course.courseNo] = [];
+                }
+
+                courseMap[course.courseNo].push(course.courseName);
+            });
+        }
+
+        // Instructors Map
+        let instructorsMap = {}
+        if (this.props.instructors) {
+            this.props.instructors.forEach(instructor => {
+                if (!instructorsMap.hasOwnProperty(instructor.instructorId)) {
+                    instructorsMap[instructor.instructorId] = [];
+                }
+
+                instructorsMap[instructor.instructorId].push(instructor.instructorName);
+            })
+        }
+
+        // Years & Terms
+        let years = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022];
+        let terms = ["Fall", "Spring", "Summer", "Winter"];
+
         return (
             <Modal size="lg" show={this.props.visibility} onHide={this.close}>
                 <Modal.Header closeButton>
@@ -88,26 +167,41 @@ class NewEntryModal extends React.Component {
                     <Form>
                         <Form.Row>
                             <Form.Group as={Col} controlId="courseNo">
-                                <Form.Control required name="courseNo" onChange={this.textInput} placeholder="Course Number"/>
+                                <Form.Control as="select" onChange={this.handleNumberSelect} custom>
+                                    <option className="initial-option" value={null}>Course No.</option>
+                                    { Object.keys(courseMap).map((courseNo, i) => <option key={courseNo + courseMap[courseNo]} value={courseNo}>{courseNo}</option>) }
+                                </Form.Control>
                             </Form.Group>
-
+                                
                             <Form.Group as={Col} controlId="courseName">
-                                <Form.Control required name="courseName" onChange={this.textInput} placeholder="Course Name"/>
+                                <Form.Control as="select" onChange={this.handleNameSelect} custom>
+                                    <option className="initial-option" value={null}>Course Name</option>
+                                    { courseMap[this.state.form.courseNo] && courseMap[this.state.form.courseNo].map((courseName, i) => <option key={this.state.form.courseNo + courseName} value={courseName}>{courseName}</option>) }
+                                </Form.Control>
                             </Form.Group>
                         </Form.Row>
 
                         <Form.Row>
                             <Form.Group as={Col} controlId="year">
-                                <Form.Control required name="year" onChange={this.textInput} placeholder="Year"/>
+                                <Form.Control as="select" onChange={this.handleYearSelect} custom>
+                                    <option className="initial-option" value={null}>Year</option>
+                                    { years && [...years].map((year, i) => <option key={year} value={year}>{year}</option>) }
+                                </Form.Control>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="term">
-                                <Form.Control required name="term" onChange={this.textInput} placeholder="Term"/>
+                                <Form.Control as="select" onChange={this.handleTermSelect} custom>
+                                    <option className="initial-option" value={null}>Term</option>
+                                    { terms && [...terms].map((term, i) => <option key={term} value={term}>{term}</option>) }
+                                </Form.Control>
                             </Form.Group>
                         </Form.Row>
 
                         <Form.Group controlId="primaryInstructor">
-                            <Form.Control required name="primaryInstructor" onChange={this.textInput} placeholder="Primary Instructor"/>
+                            <Form.Control as="select" onChange={this.handleInstructorSelect} custom>
+                                <option className="initial-option" value={null}>Instructor Name</option>
+                                { Object.entries(instructorsMap).map(([instructorId, instructorName], i) => <option key={instructorId} value={instructorId}>{instructorName}</option>) }
+                            </Form.Control>
                         </Form.Group>
 
                         <Form.Row>

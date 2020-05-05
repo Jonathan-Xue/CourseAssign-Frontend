@@ -2,6 +2,9 @@ import React from 'react';
 import { Alert, Button, Col, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
+import { connect } from 'react-redux';
+import { getEntries, deleteEntry } from '../../actions/entryActions';
+
 const initialState = {
     error: false,
 
@@ -31,6 +34,57 @@ class DeleteEntryModal extends React.Component {
         });
     }
 
+    // Select
+    handleNumberSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                courseNo: parseInt(e.target.value),
+            }
+        });
+    }
+
+    handleNameSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                courseName: e.target.value,
+            }
+        });
+    }
+
+    handleYearSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                year: parseInt(e.target.value),
+            }
+        });
+    }
+
+    handleTermSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                term: e.target.value,
+            }
+        });
+    }
+
+    handleInstructorSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                primaryInstructor: parseInt(e.target.value),
+            }
+        });
+    }
+
     // Save Changes To Database
     submit = (e) => {
         // Check All Fields Valid
@@ -42,19 +96,16 @@ class DeleteEntryModal extends React.Component {
         }
         this.setState({ error: false });
 
-        // Axios Request
-        /*deleteEntry(
-            this.state.form.courseNo,
-            this.state.form.courseName,
-            this.state.form.year,
-            this.state.form.term,
-            this.state.form.primaryInstructor
-        ).then(res => {
-            // Close Form
-            this.props.close();
+        // Redux Action
+        this.props.dispatch(deleteEntry(this.state.form.courseNo, this.state.form.courseName, this.state.form.year, this.state.form.term, this.state.form.primaryInstructor)).then(res => {
+            this.props.dispatch(getEntries()).then(res => {
+                this.props.close();
+            }).catch(err => {
+                console.log(err);
+            });
         }).catch(err => {
-            console.log(err);
-        });*/
+            this.setState({ error: false })
+        });
     }    
 
     // Close Modal
@@ -65,6 +116,32 @@ class DeleteEntryModal extends React.Component {
 
     // Render
     render() {
+        let courseMap = {};
+        let years = new Set();
+        let terms = new Set();
+        let instructorsMap = {};
+        if (this.props.entries) {
+            this.props.entries.forEach(entry => {
+                // Course Map
+                if (!courseMap.hasOwnProperty(entry.courseNo)) {
+                    courseMap[entry.courseNo] = new Set();
+                }
+
+                courseMap[entry.courseNo].add(entry.courseName);
+
+                // Years & Term
+                years.add(entry.year);
+                terms.add(entry.term);
+
+                // Instructors Map
+                if (!instructorsMap.hasOwnProperty(entry.primaryInstructor)) {
+                    instructorsMap[entry.primaryInstructor] = new Set();
+                }
+
+                instructorsMap[entry.primaryInstructor] = entry.instructorName;
+            });
+        }
+
         return (
             <Modal size="lg" show={this.props.visibility} onHide={this.close}>
                 <Modal.Header closeButton>
@@ -75,27 +152,41 @@ class DeleteEntryModal extends React.Component {
                     <Form>
                         <Form.Row>
                             <Form.Group as={Col} controlId="courseNo">
-                                <Form.Control required name="courseNo" onChange={this.textInput} placeholder="Course Number"/>
+                                <Form.Control as="select" onChange={this.handleNumberSelect} custom>
+                                    <option className="initial-option" value={null}>Course No.</option>
+                                    { Object.keys(courseMap).map((courseNo, i) => <option key={courseNo + courseMap[courseNo]} value={courseNo}>{courseNo}</option>) }
+                                </Form.Control>
                             </Form.Group>
-
+                                
                             <Form.Group as={Col} controlId="courseName">
-                                <Form.Control required name="courseName" onChange={this.textInput} placeholder="Course Name"/>
+                                <Form.Control as="select" onChange={this.handleNameSelect} custom>
+                                    <option className="initial-option" value={null}>Course Name</option>
+                                    { courseMap[this.state.form.courseNo] && [...courseMap[this.state.form.courseNo]].map((courseName, i) => <option key={this.state.form.courseNo + courseName} value={courseName}>{courseName}</option>) }
+                                </Form.Control>
                             </Form.Group>
                         </Form.Row>
 
-
                         <Form.Row>
                             <Form.Group as={Col} controlId="year">
-                                <Form.Control required name="year" onChange={this.textInput} placeholder="Year"/>
+                                <Form.Control as="select" onChange={this.handleYearSelect} custom>
+                                    <option className="initial-option" value={null}>Year</option>
+                                    { years && [...years].map((year, i) => <option key={year} value={year}>{year}</option>) }
+                                </Form.Control>
                             </Form.Group>
 
                             <Form.Group as={Col} controlId="term">
-                                <Form.Control required name="term" onChange={this.textInput} placeholder="Term"/>
+                                <Form.Control as="select" onChange={this.handleTermSelect} custom>
+                                    <option className="initial-option" value={null}>Term</option>
+                                    { terms && [...terms].map((term, i) => <option key={term} value={term}>{term}</option>) }
+                                </Form.Control>
                             </Form.Group>
                         </Form.Row>
 
                         <Form.Group controlId="primaryInstructor">
-                            <Form.Control required name="primaryInstructor" onChange={this.textInput} placeholder="Primary Instructor"/>
+                            <Form.Control as="select" onChange={this.handleInstructorSelect} custom>
+                                <option className="initial-option" value={null}>Instructor Name</option>
+                                { Object.entries(instructorsMap).map(([instructorId, instructorName], i) => <option key={instructorId} value={instructorId}>{instructorName}</option>) }
+                            </Form.Control>
                         </Form.Group>
                     </Form>
 
@@ -111,4 +202,4 @@ class DeleteEntryModal extends React.Component {
     };
 };
 
-export default DeleteEntryModal;
+export default connect()(DeleteEntryModal);

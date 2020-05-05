@@ -166,8 +166,8 @@ class HomeView extends React.Component {
                 <NavBar history={this.props.history}/>
                 <div className="home-screen">
                     <div className="left">
-                        <NewEntryModal visibility={this.state.showNewEntryModal} close={this.closeNewEntryModal}/>
-                        <DeleteEntryModal visibility={this.state.showDeleteEntryModal} close={this.closeDeleteEntryModal}/>
+                        <NewEntryModal courses={this.props.courseRequests.getCourseResp} instructors={this.props.instructorRequests.getInstructorResp} visibility={this.state.showNewEntryModal} close={this.closeNewEntryModal}/>
+                        <DeleteEntryModal entries={this.props.entryRequests.getEntryResp} visibility={this.state.showDeleteEntryModal} close={this.closeDeleteEntryModal}/>
                         <NewCourseModal courses={this.props.courseRequests.getCourseResp} visibility={this.state.showNewCourseModal} close={this.closeNewCourseModal}/>
                         <UpdateCourseModal courses={this.props.courseRequests.getCourseResp} visibility={this.state.showUpdateCourseModal} close={this.closeUpdateCourseModal}/>
                         <DeleteCourseModal courses={this.props.courseRequests.getCourseResp} visibility={this.state.showDeleteCourseModal} close={this.closeDeleteCourseModal}/>
