@@ -4,6 +4,7 @@ import NavBar from './NavBar';
 import NewEntryModal from './modals/NewEntryModal';
 import DeleteEntryModal from './modals/DeleteEntryModal';
 import NewCourseModal from './modals/NewCourseModal';
+import UpdateCourseModal from './modals/UpdateCourseModal';
 import DeleteCourseModal from './modals/DeleteCourseModal';
 import NewInstructorModal from './modals/NewInstructorModal';
 import UpdateInstructorModal from './modals/UpdateInstructorModal';
@@ -28,6 +29,7 @@ class HomeView extends React.Component {
             showDeleteEntryModal: false,
 
             showNewCourseModal: false,
+            showUpdateCourseModal: false,
             showDeleteCourseModal: false,
 
             showNewInstructorModal: false,
@@ -75,6 +77,9 @@ class HomeView extends React.Component {
 
     openNewCourseModal = () => { this.setState({ showNewCourseModal: true }); };
     closeNewCourseModal = () => { this.setState({ showNewCourseModal: false }); };
+
+    openUpdateCourseModal = () => { this.setState({ showUpdateCourseModal: true }); };
+    closeUpdateCourseModal = () => { this.setState({ showUpdateCourseModal: false }); };
 
     openDeleteCourseModal = () => { this.setState({ showDeleteCourseModal: true }); };
     closeDeleteCourseModal = () => { this.setState({ showDeleteCourseModal: false }); };
@@ -162,9 +167,10 @@ class HomeView extends React.Component {
                     <div className="left">
                         <NewEntryModal visibility={this.state.showNewEntryModal} close={this.closeNewEntryModal}/>
                         <DeleteEntryModal visibility={this.state.showDeleteEntryModal} close={this.closeDeleteEntryModal}/>
-                        <NewCourseModal visibility={this.state.showNewCourseModal} close={this.closeNewCourseModal}/>
-                        <DeleteCourseModal visibility={this.state.showDeleteCourseModal} close={this.closeDeleteCourseModal}/>
-                        <NewInstructorModal visibility={this.state.showNewInstructorModal} close={this.closeNewInstructorModal}/>
+                        <NewCourseModal courses={this.props.courseRequests.getCourseResp} visibility={this.state.showNewCourseModal} close={this.closeNewCourseModal}/>
+                        <UpdateCourseModal courses={this.props.courseRequests.getCourseResp} visibility={this.state.showUpdateCourseModal} close={this.closeUpdateCourseModal}/>
+                        <DeleteCourseModal courses={this.props.courseRequests.getCourseResp} visibility={this.state.showDeleteCourseModal} close={this.closeDeleteCourseModal}/>
+                        <NewInstructorModal instructors={this.props.instructorRequests.getInstructorResp} visibility={this.state.showNewInstructorModal} close={this.closeNewInstructorModal}/>
                         <UpdateInstructorModal instructors={this.props.instructorRequests.getInstructorResp} visibility={this.state.showUpdateInstructorModal} close={this.closeUpdateInstructorModal}/>
                         <DeleteInstructorModal instructors={this.props.instructorRequests.getInstructorResp} visibility={this.state.showDeleteInstructorModal} close={this.closeDeleteInstructorModal}/>
 
@@ -176,7 +182,7 @@ class HomeView extends React.Component {
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <ListGroup className="list" variant="flush">
-                                        <ListGroup.Item action className="list-item" onClick={this.openNewEntryModal}>Insert Entry</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.openNewEntryModal}>New Entry</ListGroup.Item>
                                         <ListGroup.Item action className="list-item" onClick={this.openDeleteEntryModal}>Delete Entry</ListGroup.Item>
                                     </ListGroup>
                                 </Accordion.Collapse>
@@ -189,7 +195,8 @@ class HomeView extends React.Component {
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="1">
                                     <ListGroup className="list" variant="flush">
-                                        <ListGroup.Item action className="list-item" onClick={this.openNewCourseModal}>Insert/Modify Course</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.openNewCourseModal}>New Course</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.openUpdateCourseModal}>Update Course</ListGroup.Item>
                                         <ListGroup.Item action className="list-item" onClick={this.openDeleteCourseModal}>Delete Course</ListGroup.Item>
                                     </ListGroup>
                                 </Accordion.Collapse>
@@ -202,7 +209,7 @@ class HomeView extends React.Component {
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="2">
                                     <ListGroup className="list" variant="flush">
-                                        <ListGroup.Item action className="list-item" onClick={this.openNewInstructorModal}>Insert Instructor</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.openNewInstructorModal}>New Instructor</ListGroup.Item>
                                         <ListGroup.Item action className="list-item" onClick={this.openUpdateInstructorModal}>Update Instructor</ListGroup.Item>
                                         <ListGroup.Item action className="list-item" onClick={this.openDeleteInstructorModal}>Delete Instructor</ListGroup.Item>
                                     </ListGroup>

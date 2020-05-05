@@ -3,7 +3,7 @@ import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
 import { connect } from 'react-redux';
-import { createInstructor } from '../../actions/instructorActions';
+import { getInstructors, createInstructor } from '../../actions/instructorActions';
 
 const initialState = {
     error: false,
@@ -44,7 +44,11 @@ class NewInstructorModal extends React.Component {
 
         // Redux Action
         this.props.dispatch(createInstructor(this.state.form.instructorName, this.state.form.researchInterests)).then(res => {
-            this.props.close();
+            this.props.dispatch(getInstructors()).then(res => {
+                this.props.close();
+            }).catch(err => {
+                console.log(err);
+            });
         }).catch(err => {
             console.log(err);
         });

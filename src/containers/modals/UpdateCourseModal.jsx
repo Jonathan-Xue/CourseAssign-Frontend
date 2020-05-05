@@ -3,7 +3,7 @@ import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
 import { connect } from 'react-redux';
-import { getCourses, deleteCourse } from '../../actions/courseActions';
+import { getCourses, updateCourse } from '../../actions/courseActions';
 
 const initialState = {
     error: false,
@@ -11,14 +11,25 @@ const initialState = {
     form: {
         courseNo: null,
         courseName: null,
+        courseDesc: null,
     },
 }
 
-class DeleteCourseModal extends React.Component {
+class UpdateCourseModal extends React.Component {
     constructor() {
         super();
 
         this.state = initialState;
+    }
+
+    // Form Input
+    textInput = (e) => {
+        this.setState({ 
+            form: {
+                ...this.state.form, 
+                [e.target.name]: e.target.value.trim(),
+            },
+        });
     }
 
     // Select
@@ -45,7 +56,7 @@ class DeleteCourseModal extends React.Component {
     // Save Changes To Database
     submit = (e) => {
         // Check All Fields Valid
-        for(const entry in this.state.form) {
+        for (const entry in this.state.form) {
             if (!this.state.form[entry]) {
                 this.setState({ error: true });
                 return;
@@ -53,8 +64,8 @@ class DeleteCourseModal extends React.Component {
         }
         this.setState({ error: false });
 
-        // Axios Request
-        this.props.dispatch(deleteCourse(this.state.form.courseNo, this.state.form.courseName)).then(res => {
+        // Redux Action
+        this.props.dispatch(updateCourse(this.state.form.courseNo, this.state.form.courseName, this.state.form.courseDesc)).then(res => {
             this.props.dispatch(getCourses()).then(res => {
                 this.props.close();
             }).catch(err => {
@@ -87,12 +98,12 @@ class DeleteCourseModal extends React.Component {
         return (
             <Modal size="lg" show={this.props.visibility} onHide={this.close}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Delete Course</Modal.Title>
+                    <Modal.Title>Update Course</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
                     <Form>
-                        <Form.Group controlId="courseNo">
+                       <Form.Group controlId="courseNo">
                             <Form.Control as="select" onChange={this.handleNumberSelect} custom>
                                 <option value={null}>---course no---</option>
                                 { Object.keys(courseMap).map((courseNo, i) => <option key={courseNo + courseMap[courseNo]} value={courseNo}>{courseNo}</option>) }
@@ -105,6 +116,10 @@ class DeleteCourseModal extends React.Component {
                                 { courseMap[this.state.form.courseNo] && courseMap[this.state.form.courseNo].map((courseName, i) => <option key={this.state.form.courseNo + courseName} value={courseName}>{courseName}</option>) }
                             </Form.Control>
                         </Form.Group>
+
+                        <Form.Group controlId="courseDesc">
+                            <Form.Control required as="textarea" rows="5" name="courseDesc" onChange={this.textInput} placeholder="Course Description"/>
+                        </Form.Group>
                     </Form>
 
                     { this.state.error && <Alert variant="danger">All fields are required!</Alert> }
@@ -112,11 +127,11 @@ class DeleteCourseModal extends React.Component {
 
                 <Modal.Footer>
                     <Button variant="danger" onClick={this.close}>Close</Button>
-                    <Button variant="primary" onClick={this.submit}>Delete Course</Button>
+                    <Button variant="primary" onClick={this.submit}>Update Course</Button>
                 </Modal.Footer>
             </Modal>
         );
     };
 };
 
-export default connect()(DeleteCourseModal);
+export default connect()(UpdateCourseModal);

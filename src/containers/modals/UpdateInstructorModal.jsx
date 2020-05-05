@@ -3,7 +3,7 @@ import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
 import { connect } from 'react-redux';
-import { updateInstructor } from '../../actions/instructorActions';
+import { getInstructors, updateInstructor } from '../../actions/instructorActions';
 
 const initialState = {
     error: false,
@@ -32,7 +32,7 @@ class UpdateInstructorModal extends React.Component {
         });
     }
 
-    // Select Input
+    // Select
     handleNameSelect = (e) => {
         this.setState({
             ...this.state,
@@ -57,10 +57,14 @@ class UpdateInstructorModal extends React.Component {
 
         // Redux Action
         this.props.dispatch(updateInstructor(this.state.form.instructorId, this.state.form.instructorName, this.state.form.researchInterests)).then(res => {
-            this.props.close();
+            this.props.dispatch(getInstructors()).then(res => {
+                this.props.close();
+            }).catch(err => {
+                console.log(err);
+            });
         }).catch(err => {
             console.log(err);
-        })
+        });
     }
 
     // Close Modal
@@ -82,10 +86,7 @@ class UpdateInstructorModal extends React.Component {
                         <Form.Group controlId="instructorName">
                             <Form.Control as="select" onChange={this.handleNameSelect} custom>
                                 <option value={null}>---instructor name---</option>
-                                {
-                                    this.props.instructors && 
-                                        this.props.instructors.map((instructor, i) => <option key={instructor.instructorId} value={JSON.stringify(instructor)}>{instructor.instructorName}</option>)
-                                }
+                                { this.props.instructors && this.props.instructors.map((instructor, i) => <option key={instructor.instructorId} value={JSON.stringify(instructor)}>{instructor.instructorName}</option>) }
                             </Form.Control>
                         </Form.Group>
                             

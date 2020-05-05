@@ -3,7 +3,7 @@ import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
 import { connect } from 'react-redux';
-import { deleteInstructor } from '../../actions/instructorActions';
+import { getInstructors, deleteInstructor } from '../../actions/instructorActions';
 
 const initialState = {
     error: false,
@@ -20,17 +20,7 @@ class DeleteInstructorModal extends React.Component {
         this.state = initialState;
     }
 
-    // Form Input
-    textInput = (e) => {
-        this.setState({ 
-            form: {
-                ...this.state.form, 
-                [e.target.name]: e.target.value.trim(),
-            },
-        });
-    }
-
-    // Select Input
+    // Select
     handleNameSelect = (e) => {
         this.setState({
             ...this.state,
@@ -54,10 +44,14 @@ class DeleteInstructorModal extends React.Component {
 
         // Redux Action
         this.props.dispatch(deleteInstructor(this.state.form.instructorId)).then(res => {
-            this.props.close();
+            this.props.dispatch(getInstructors()).then(res => {
+                this.props.close();
+            }).catch(err => {
+                console.log(err);
+            });
         }).catch(err => {
             console.log(err);
-        })
+        });
     }
 
     // Close Modal
@@ -79,10 +73,7 @@ class DeleteInstructorModal extends React.Component {
                         <Form.Group controlId="instructorName">
                             <Form.Control as="select" onChange={this.handleNameSelect} custom>
                                 <option value={null}>---instructor name---</option>
-                                {
-                                    this.props.instructors && 
-                                        this.props.instructors.map((instructor, i) => <option key={instructor.instructorId} value={JSON.stringify(instructor)}>{instructor.instructorName}</option>)
-                                }
+                                { this.props.instructors && this.props.instructors.map((instructor, i) => <option key={instructor.instructorId} value={JSON.stringify(instructor)}>{instructor.instructorName}</option>) }
                             </Form.Control>
                         </Form.Group>
                     </Form>

@@ -2,7 +2,8 @@ import React from 'react';
 import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
-import { getCourses, createCourse, updateCourse } from '../../requests/courses.js'
+import { connect } from 'react-redux';
+import { getCourses, createCourse } from '../../actions/courseActions';
 
 const initialState = {
     error: false,
@@ -42,41 +43,15 @@ class NewCourseModal extends React.Component {
         }
         this.setState({ error: false });
 
-        // Axios Request
-        getCourses().then(res => {
-            // Iterate Over Response
-            let flag = false;
-            for (const entry of res.data.data) {
-                if (entry['courseNo'].toString() === this.state.form.courseNo && entry['courseName'].toString() === this.state.form.courseName) {
-                    flag = true;
-                    break;
-                }
-            }
-
-            // Create New Record || Update Existing Record
-            if (flag) {
-                updateCourse(
-                    this.state.form.courseNo,
-                    this.state.form.courseName,
-                    this.state.form.courseDesc
-                ).then(res => {
-                    // Close Form
-                    this.props.close();
-                }).catch(err => {
-                    console.log(err);
-                });
-            } else {
-                createCourse(
-                    this.state.form.courseNo,
-                    this.state.form.courseName,
-                    this.state.form.courseDesc
-                ).then(res => {
-                    // Close Form
-                    this.props.close();
-                }).catch(err => {
-                    console.log(err);
-                });
-            }
+        // Redux Action
+        this.props.dispatch(createCourse(this.state.form.courseNo, this.state.form.courseName, this.state.form.courseDesc)).then(res => {
+            this.props.dispatch(getCourses()).then(res => {
+                this.props.close();
+            }).catch(err => {
+                console.log(err);
+            });
+        }).catch(err => {
+            console.log(err);
         });
     }
 
@@ -114,11 +89,11 @@ class NewCourseModal extends React.Component {
 
                 <Modal.Footer>
                     <Button variant="danger" onClick={this.close}>Close</Button>
-                    <Button variant="primary" onClick={this.submit}>New/Update Course</Button>
+                    <Button variant="primary" onClick={this.submit}>New Course</Button>
                 </Modal.Footer>
             </Modal>
         );
     };
 };
 
-export default NewCourseModal;
+export default connect()(NewCourseModal);
