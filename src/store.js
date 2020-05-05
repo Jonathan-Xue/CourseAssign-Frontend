@@ -7,7 +7,7 @@ import logger from 'redux-logger';
 import createRootReducer from './reducers';
 import { verifyAuth } from "./actions/authActions";
 
-export const history = createBrowserHistory()
+export const history = createBrowserHistory({ basename: process.env.PUBLIC_URL });
 export default function configureStore(preloadedState) {
 	const store = createStore(
 	    createRootReducer(history),
@@ -23,4 +23,4 @@ export default function configureStore(preloadedState) {
 
 	store.dispatch(verifyAuth());
 	return store
-}
+};
