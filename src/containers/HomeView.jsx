@@ -1,12 +1,13 @@
 import React from 'react';
 import { Accordion, Card, Button, Col, Form, InputGroup, ListGroup } from 'react-bootstrap';
 import NavBar from './NavBar';
-import NewEntryModal from '../components/modals/NewEntryModal';
-import DeleteEntryModal from '../components/modals/DeleteEntryModal';
-import NewCourseModal from '../components/modals/NewCourseModal';
-import DeleteCourseModal from '../components/modals/DeleteCourseModal';
-import NewInstructorModal from '../components/modals/NewInstructorModal';
-import UpdateInstructorModal from '../components/modals/UpdateInstructorModal';
+import NewEntryModal from './modals/NewEntryModal';
+import DeleteEntryModal from './modals/DeleteEntryModal';
+import NewCourseModal from './modals/NewCourseModal';
+import DeleteCourseModal from './modals/DeleteCourseModal';
+import NewInstructorModal from './modals/NewInstructorModal';
+import UpdateInstructorModal from './modals/UpdateInstructorModal';
+import DeleteInstructorModal from './modals/DeleteInstructorModal';
 import CardList from '../components/CardList';
 import './HomeView.scss';
 
@@ -31,6 +32,7 @@ class HomeView extends React.Component {
 
             showNewInstructorModal: false,
             showUpdateInstructorModal: false,
+            showDeleteInstructorModal: false,
 
             filter: null,
             selection: null,
@@ -64,29 +66,27 @@ class HomeView extends React.Component {
         }).catch(err => {});
     }
 
-    // New Entry Modal
+    // Modals
     openNewEntryModal = () => { this.setState({ showNewEntryModal: true }); };
     closeNewEntryModal = () => { this.setState({ showNewEntryModal: false }); };
 
-    // Delete Entry Modal
     openDeleteEntryModal = () => { this.setState({ showDeleteEntryModal: true }); };
     closeDeleteEntryModal = () => { this.setState({ showDeleteEntryModal: false }); };
 
-    // New Course Modal
     openNewCourseModal = () => { this.setState({ showNewCourseModal: true }); };
     closeNewCourseModal = () => { this.setState({ showNewCourseModal: false }); };
 
-    // Delete Course Modal
     openDeleteCourseModal = () => { this.setState({ showDeleteCourseModal: true }); };
     closeDeleteCourseModal = () => { this.setState({ showDeleteCourseModal: false }); };
 
-    // New Instructor Modal
     openNewInstructorModal = () => { this.setState({ showNewInstructorModal: true }); };
     closeNewInstructorModal = () => { this.setState({ showNewInstructorModal: false }); };
 
-    // Update Instructor Modal
     openUpdateInstructorModal = () => { this.setState({ showUpdateInstructorModal: true }); };
     closeUpdateInstructorModal = () => { this.setState({ showUpdateInstructorModal: false }); };
+
+    openDeleteInstructorModal = () => { this.setState({ showDeleteInstructorModal: true }); };
+    closeDeleteInstructorModal = () => { this.setState({ showDeleteInstructorModal: false }); };
 
     // Open Current Version
     findEntries = () => {
@@ -165,7 +165,8 @@ class HomeView extends React.Component {
                         <NewCourseModal visibility={this.state.showNewCourseModal} close={this.closeNewCourseModal}/>
                         <DeleteCourseModal visibility={this.state.showDeleteCourseModal} close={this.closeDeleteCourseModal}/>
                         <NewInstructorModal visibility={this.state.showNewInstructorModal} close={this.closeNewInstructorModal}/>
-                        <UpdateInstructorModal visibility={this.state.showUpdateInstructorModal} close={this.closeUpdateInstructorModal}/>
+                        <UpdateInstructorModal instructors={this.props.instructorRequests.getInstructorResp} visibility={this.state.showUpdateInstructorModal} close={this.closeUpdateInstructorModal}/>
+                        <DeleteInstructorModal instructors={this.props.instructorRequests.getInstructorResp} visibility={this.state.showDeleteInstructorModal} close={this.closeDeleteInstructorModal}/>
 
                         <Accordion defaultActiveKey="-1">
                             <Card>
@@ -203,6 +204,7 @@ class HomeView extends React.Component {
                                     <ListGroup className="list" variant="flush">
                                         <ListGroup.Item action className="list-item" onClick={this.openNewInstructorModal}>Insert Instructor</ListGroup.Item>
                                         <ListGroup.Item action className="list-item" onClick={this.openUpdateInstructorModal}>Update Instructor</ListGroup.Item>
+                                        <ListGroup.Item action className="list-item" onClick={this.openDeleteInstructorModal}>Delete Instructor</ListGroup.Item>
                                     </ListGroup>
                                 </Accordion.Collapse>
                             </Card>

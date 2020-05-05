@@ -2,10 +2,14 @@ import React from 'react';
 import { Alert, Button, Form, Modal } from 'react-bootstrap';
 import './Modal.scss';
 
+import { connect } from 'react-redux';
+import { updateInstructor } from '../../actions/instructorActions';
+
 const initialState = {
     error: false,
 
     form: {
+        instructorId: null,
         instructorName: null,
         researchInterests: null,
     },
@@ -28,6 +32,18 @@ class UpdateInstructorModal extends React.Component {
         });
     }
 
+    // Select Input
+    handleNameSelect = (e) => {
+        this.setState({
+            ...this.state,
+            form: {
+                ...this.state.form,
+                instructorId: JSON.parse(e.target.value).instructorId,
+                instructorName: JSON.parse(e.target.value).instructorName,
+            }
+        });
+    }
+
     // Save Changes To Database
     submit = (e) => {
         // Check All Fields Valid
@@ -39,8 +55,12 @@ class UpdateInstructorModal extends React.Component {
         }
         this.setState({ error: false });
 
-        // Axios Request
-        
+        // Redux Action
+        this.props.dispatch(updateInstructor(this.state.form.instructorId, this.state.form.instructorName, this.state.form.researchInterests)).then(res => {
+            this.props.close();
+        }).catch(err => {
+            console.log(err);
+        })
     }
 
     // Close Modal
@@ -60,7 +80,13 @@ class UpdateInstructorModal extends React.Component {
                 <Modal.Body>
                     <Form>
                         <Form.Group controlId="instructorName">
-                            <Form.Control required name="instructorName" onChange={this.textInput} placeholder="Instructor Name"/>
+                            <Form.Control as="select" onChange={this.handleNameSelect} custom>
+                                <option value={null}>---instructor name---</option>
+                                {
+                                    this.props.instructors && 
+                                        this.props.instructors.map((instructor, i) => <option key={instructor.instructorId} value={JSON.stringify(instructor)}>{instructor.instructorName}</option>)
+                                }
+                            </Form.Control>
                         </Form.Group>
                             
                         <Form.Group controlId="researchInterests">
@@ -80,4 +106,4 @@ class UpdateInstructorModal extends React.Component {
     };
 };
 
-export default UpdateInstructorModal;
+export default connect()(UpdateInstructorModal);
