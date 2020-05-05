@@ -104,7 +104,7 @@ class DeleteEntryModal extends React.Component {
                 console.log(err);
             });
         }).catch(err => {
-            this.setState({ error: false })
+            console.log(err);
         });
     }    
 
