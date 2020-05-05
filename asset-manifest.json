@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/CourseAssign/static/css/main.170fae6c.chunk.css",
-    "main.js": "/CourseAssign/static/js/main.cc391b74.chunk.js",
-    "main.js.map": "/CourseAssign/static/js/main.cc391b74.chunk.js.map",
+    "main.js": "/CourseAssign/static/js/main.6df722c0.chunk.js",
+    "main.js.map": "/CourseAssign/static/js/main.6df722c0.chunk.js.map",
     "runtime-main.js": "/CourseAssign/static/js/runtime-main.457c463c.js",
     "runtime-main.js.map": "/CourseAssign/static/js/runtime-main.457c463c.js.map",
-    "static/js/2.439afe18.chunk.js": "/CourseAssign/static/js/2.439afe18.chunk.js",
-    "static/js/2.439afe18.chunk.js.map": "/CourseAssign/static/js/2.439afe18.chunk.js.map",
+    "static/js/2.107bbedb.chunk.js": "/CourseAssign/static/js/2.107bbedb.chunk.js",
+    "static/js/2.107bbedb.chunk.js.map": "/CourseAssign/static/js/2.107bbedb.chunk.js.map",
     "index.html": "/CourseAssign/index.html",
-    "precache-manifest.d76c5d59b1663d1ff780e3356b1c0045.js": "/CourseAssign/precache-manifest.d76c5d59b1663d1ff780e3356b1c0045.js",
+    "precache-manifest.923146c8e1187a0cb9e3acb17fd706f7.js": "/CourseAssign/precache-manifest.923146c8e1187a0cb9e3acb17fd706f7.js",
     "service-worker.js": "/CourseAssign/service-worker.js",
     "static/css/main.170fae6c.chunk.css.map": "/CourseAssign/static/css/main.170fae6c.chunk.css.map",
-    "static/js/2.439afe18.chunk.js.LICENSE.txt": "/CourseAssign/static/js/2.439afe18.chunk.js.LICENSE.txt",
+    "static/js/2.107bbedb.chunk.js.LICENSE.txt": "/CourseAssign/static/js/2.107bbedb.chunk.js.LICENSE.txt",
     "static/media/background.jpg": "/CourseAssign/static/media/background.23c73952.jpg",
     "static/media/logo.svg": "/CourseAssign/static/media/logo.5d5d9eef.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.457c463c.js",
-    "static/js/2.439afe18.chunk.js",
+    "static/js/2.107bbedb.chunk.js",
     "static/css/main.170fae6c.chunk.css",
-    "static/js/main.cc391b74.chunk.js"
+    "static/js/main.6df722c0.chunk.js"
   ]
 }
