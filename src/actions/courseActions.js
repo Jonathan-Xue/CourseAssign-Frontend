@@ -1,5 +1,5 @@
 import { GET_COURSE_REQUEST, GET_COURSE_SUCCESS, GET_COURSE_FAILED, POST_COURSE_REQUEST, POST_COURSE_SUCCESS, POST_COURSE_FAILED, PUT_COURSE_REQUEST, PUT_COURSE_SUCCESS, PUT_COURSE_FAILED, DELETE_COURSE_REQUEST, DELETE_COURSE_SUCCESS, DELETE_COURSE_FAILED } from '../constants/actionTypes';
-import { SERVER_URL } from '../constants/misc';
+import { config } from '../constants/config';
 import axios from 'axios';
 
 // Actions
@@ -94,7 +94,7 @@ export const getCourses = () => dispatch => new Promise((resolve, reject) => {
 	};
 
 	axios.get(
-		SERVER_URL + '/courses', 
+		config.API_URL + '/courses', 
 		body
 	).then(res => {
 		dispatch(getCourseSuccess(res.data.data));
@@ -118,7 +118,7 @@ export const createCourse = (courseNo, courseName, courseDesc) => dispatch => ne
 	}
 
 	axios.post(
-		SERVER_URL + '/courses', 
+		config.API_URL + '/courses', 
 		body
 	).then(res => {
 		dispatch(postCourseSuccess(res));
@@ -139,7 +139,7 @@ export const updateCourse = (courseNo, courseName, courseDesc) => dispatch => ne
 	}
 
 	axios.put(
-		SERVER_URL + '/courses/' + courseNo + '/' + courseName, 
+		config.API_URL + '/courses/' + courseNo + '/' + courseName, 
 		body
 	).then(res => {
 		dispatch(putCourseSuccess(res));
@@ -159,7 +159,7 @@ export const deleteCourse = (courseNo, courseName) => dispatch => new Promise((r
 	}
 
 	axios.delete(
-		SERVER_URL + '/courses/' + courseNo + '/' + courseName, 
+		config.API_URL + '/courses/' + courseNo + '/' + courseName, 
 		body
 	).then(res => {
 		dispatch(deleteCourseSuccess(res));

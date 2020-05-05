@@ -1,5 +1,5 @@
 import { MATCH_REQUEST, MATCH_SUCCESS, MATCH_FAILED } from '../constants/actionTypes';
-import { SERVER_URL } from '../constants/misc';
+import { config } from '../constants/config';
 import axios from 'axios';
 
 // Actions
@@ -33,7 +33,7 @@ export const matchInstructorsToCourse = (courseNo, courseName) => dispatch => {
 	};
 
 	axios.get(
-		SERVER_URL + '/matches/course/' + courseNo + '/' + courseName, 
+		config.API_URL + '/matches/course/' + courseNo + '/' + courseName, 
 		body
 	).then(res => {
 		dispatch(matchSuccess(res.data.data));
@@ -51,7 +51,7 @@ export const matchCoursesToInstructor = (instructorId) => dispatch => {
 	};
 
 	axios.get(
-		SERVER_URL + '/matches/instructor/' + instructorId, 
+		config.API_URL + '/matches/instructor/' + instructorId, 
 		body
 	).then(res => {
 		dispatch(matchSuccess(res.data.data));

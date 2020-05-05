@@ -1,5 +1,5 @@
 import { GET_ENTRY_REQUEST, GET_ENTRY_SUCCESS, GET_ENTRY_FAILED, POST_ENTRY_REQUEST, POST_ENTRY_SUCCESS, POST_ENTRY_FAILED, DELETE_ENTRY_REQUEST, DELETE_ENTRY_SUCCESS, DELETE_ENTRY_FAILED } from '../constants/actionTypes';
-import { SERVER_URL } from '../constants/misc';
+import { config } from '../constants/config';
 import axios from 'axios';
 
 // Actions
@@ -73,7 +73,7 @@ export const getEntries = () => dispatch => new Promise((resolve, reject) => {
 	};
 
 	axios.get(
-		SERVER_URL + '/entries', 
+		config.API_URL + '/entries', 
 		body
 	).then(res => {
 		dispatch(getEntrySuccess(res.data.data));
@@ -111,7 +111,7 @@ export const createEntry = (courseNo, courseName, year, term, primaryInstructor,
 	};
 
 	axios.post(
-		SERVER_URL + '/entries', 
+		config.API_URL + '/entries', 
 		body
 	).then(res => {
 		dispatch(postEntrySuccess(res));
@@ -131,7 +131,7 @@ export const deleteEntry = ( courseNo, courseName, year, term, primaryInstructor
 	};
 
 	axios.delete(
-		SERVER_URL + '/entries/' + courseNo + '/' + courseName + '/' + year + '/' + term + '/' + primaryInstructor, 
+		config.API_URL + '/entries/' + courseNo + '/' + courseName + '/' + year + '/' + term + '/' + primaryInstructor, 
 		body
 	).then(res => {
 		dispatch(deleteEntrySuccess(res));

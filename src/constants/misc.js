@@ -1,1 +1,0 @@
-export const SERVER_URL = 'https://cs411-project-273718.uc.r.appspot.com/';

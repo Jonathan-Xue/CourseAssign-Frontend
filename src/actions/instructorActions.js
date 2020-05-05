@@ -1,5 +1,5 @@
 import { GET_INSTRUCTOR_REQUEST, GET_INSTRUCTOR_SUCCESS, GET_INSTRUCTOR_FAILED, POST_INSTRUCTOR_REQUEST, POST_INSTRUCTOR_SUCCESS, POST_INSTRUCTOR_FAILED, PUT_INSTRUCTOR_REQUEST, PUT_INSTRUCTOR_SUCCESS, PUT_INSTRUCTOR_FAILED, DELETE_INSTRUCTOR_REQUEST, DELETE_INSTRUCTOR_SUCCESS, DELETE_INSTRUCTOR_FAILED } from '../constants/actionTypes';
-import { SERVER_URL } from '../constants/misc';
+import { config } from '../constants/config';
 import axios from 'axios';
 
 // Actions
@@ -93,7 +93,7 @@ export const getInstructors = () => dispatch => new Promise((resolve, reject) =>
     };
 
     axios.get(
-        SERVER_URL + '/instructors', 
+        config.API_URL + '/instructors', 
         body
     ).then(res => {
         dispatch(getInstructorSuccess(res.data.data));
@@ -115,7 +115,7 @@ export const createInstructor = (instructorName, researchInterests) => dispatch 
     }
 
     axios.post(
-        SERVER_URL + '/instructors', 
+        config.API_URL + '/instructors', 
         body
     ).then(res => {
         dispatch(postInstructorSuccess(res));
@@ -137,7 +137,7 @@ export const updateInstructor = (instructorId, instructorName, researchInterests
     }
 
     axios.put(
-        SERVER_URL + '/instructors/' + instructorId,
+        config.API_URL + '/instructors/' + instructorId,
         body
     ).then(res => {
         dispatch(putInstructorSuccess(res));
@@ -157,7 +157,7 @@ export const deleteInstructor = (instructorId, instructorName, researchInterests
     }
 
     axios.delete(
-        SERVER_URL + '/instructors/' + instructorId, 
+        config.API_URL + '/instructors/' + instructorId, 
         body
     ).then(res => {
         dispatch(deleteInstructorSuccess(res));
