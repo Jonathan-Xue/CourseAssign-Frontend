@@ -12,6 +12,7 @@ export default (state = initialState, action) => {
     		return {
     			...state,
     			isMatching: true,
+                matchResp: null,
     			matchError: null,
     		}
     	case MATCH_SUCCESS:
