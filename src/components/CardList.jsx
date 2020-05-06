@@ -25,13 +25,12 @@ const CardList = (props) => {
                             </Card>
                         ): props.filter === "course"
                                 ? props.data && props.data.map((instructor, i) => 
-                                    <Card key={instructor.instructorId + i}>
+                                    <Card key={instructor.instructorId}>
                                         <Card.Title>{instructor.instructorName}</Card.Title>
                                         <Card.Subtitle className="mb-2 text-muted">Relevancy Score: {instructor.score.toFixed(3)}</Card.Subtitle>
                                         <Card.Text>{instructor.researchInterests}</Card.Text>
                                     </Card>
                                 ): null
-
                     }
                 </div>
             </OverlayTrigger>
